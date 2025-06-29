@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/home/ubuntu/Ophrus-immo/logs/.ae895b49ba399143822f56265c6a9bec99869eec-audit.json",
+    "files": [
+        {
+            "date": 1751185344135,
+            "name": "/home/ubuntu/Ophrus-immo/logs/error-2025-06-29.log",
+            "hash": "74357a88c06ee908a97202db70e1c74cfffbd4fa0b8fbc1d075ec3038b8e0dcd"
+        }
+    ],
+    "hashType": "sha256"
+}

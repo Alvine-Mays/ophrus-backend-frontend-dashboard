@@ -1,0 +1,217 @@
+2025-06-29 04:22:40 [INFO] Connexion à MongoDB...
+2025-06-29 04:22:41 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:22:41 [INFO] Mode: development
+2025-06-29 04:22:41 [INFO] Node: v22.13.0
+2025-06-29 04:22:41 [INFO] Le transporteur email est initialisé
+2025-06-29 04:22:46 [WARN] Déconnecté de MongoDB
+2025-06-29 04:23:44 [INFO] Connexion à MongoDB...
+2025-06-29 04:23:44 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:23:44 [INFO] Mode: development
+2025-06-29 04:23:44 [INFO] Node: v22.13.0
+2025-06-29 04:23:44 [INFO] Le transporteur email est initialisé
+2025-06-29 04:26:25 [INFO] Connexion à MongoDB...
+2025-06-29 04:26:25 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:26:25 [INFO] Mode: development
+2025-06-29 04:26:25 [INFO] Node: v22.13.0
+2025-06-29 04:26:26 [INFO] Le transporteur email est initialisé
+2025-06-29 04:29:19 [WARN] CORS blocked for origin: http://localhost:5174
+2025-06-29 04:32:07 [INFO] Connexion à MongoDB...
+2025-06-29 04:32:07 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:32:07 [INFO] Mode: development
+2025-06-29 04:32:07 [INFO] Node: v22.13.0
+2025-06-29 04:32:07 [INFO] Le transporteur email est initialisé
+2025-06-29 04:33:38 [WARN] Identifiant non trouvé: admin@ophrus.com
+2025-06-29 04:34:10 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:43:38 [INFO] Connexion à MongoDB...
+2025-06-29 04:43:38 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:43:38 [INFO] Mode: development
+2025-06-29 04:43:38 [INFO] Node: v22.13.0
+2025-06-29 04:43:39 [INFO] Le transporteur email est initialisé
+2025-06-29 04:53:54 [INFO] Connexion à MongoDB...
+2025-06-29 04:53:54 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 04:53:54 [INFO] Mode: development
+2025-06-29 04:53:54 [INFO] Node: v22.13.0
+2025-06-29 04:53:55 [INFO] Le transporteur email est initialisé
+2025-06-29 04:55:12 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:55:31 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:55:42 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:55:53 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:56:08 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:56:16 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 04:56:44 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:16:26 [INFO] Connexion à MongoDB...
+2025-06-29 05:16:26 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:16:26 [INFO] Mode: development
+2025-06-29 05:16:26 [INFO] Node: v22.13.0
+2025-06-29 05:16:27 [INFO] Le transporteur email est initialisé
+2025-06-29 05:17:21 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:17:41 [INFO] Connexion à MongoDB...
+2025-06-29 05:17:41 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:17:41 [INFO] Mode: development
+2025-06-29 05:17:41 [INFO] Node: v22.13.0
+2025-06-29 05:17:42 [INFO] Le transporteur email est initialisé
+2025-06-29 05:18:21 [INFO] Connexion à MongoDB...
+2025-06-29 05:18:21 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:18:21 [INFO] Mode: development
+2025-06-29 05:18:21 [INFO] Node: v22.13.0
+2025-06-29 05:18:21 [INFO] Le transporteur email est initialisé
+2025-06-29 05:19:23 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:19:40 [INFO] Connexion à MongoDB...
+2025-06-29 05:19:40 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:19:40 [INFO] Mode: development
+2025-06-29 05:19:40 [INFO] Node: v22.13.0
+2025-06-29 05:19:40 [INFO] Le transporteur email est initialisé
+2025-06-29 05:20:35 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:20:58 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:21:06 [INFO] Connexion à MongoDB...
+2025-06-29 05:21:06 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:21:06 [INFO] Mode: development
+2025-06-29 05:21:06 [INFO] Node: v22.13.0
+2025-06-29 05:21:07 [INFO] Le transporteur email est initialisé
+2025-06-29 05:37:03 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:37:20 [INFO] Connexion à MongoDB...
+2025-06-29 05:37:20 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:37:20 [INFO] Mode: development
+2025-06-29 05:37:20 [INFO] Node: v22.13.0
+2025-06-29 05:37:21 [INFO] Le transporteur email est initialisé
+2025-06-29 05:39:36 [INFO] Connexion à MongoDB...
+2025-06-29 05:39:36 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:39:36 [INFO] Mode: development
+2025-06-29 05:39:36 [INFO] Node: v22.13.0
+2025-06-29 05:40:07 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 05:40:28 [INFO] Connexion à MongoDB...
+2025-06-29 05:40:28 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 05:40:28 [INFO] Mode: development
+2025-06-29 05:40:28 [INFO] Node: v22.13.0
+2025-06-29 05:40:58 [ERROR] ValidationError: User validation failed: telephone: Le téléphone est requis
+    at Document.invalidate (/home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3343:32)
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/document.js:3104:17
+    at /home/ubuntu/Ophrus-immo/node_modules/mongoose/lib/schemaType.js:1407:9
+    at process.processTicksAndRejections (node:internal/process/task_queues:85:11)
+2025-06-29 11:04:43 [INFO] Connexion à MongoDB...
+2025-06-29 11:04:43 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:04:43 [INFO] Mode: development
+2025-06-29 11:04:43 [INFO] Node: v22.13.0
+2025-06-29 11:05:13 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:05:48 [INFO] Connexion à MongoDB...
+2025-06-29 11:05:48 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:05:48 [INFO] Mode: development
+2025-06-29 11:05:48 [INFO] Node: v22.13.0
+2025-06-29 11:06:24 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:07:23 [INFO] Connexion à MongoDB...
+2025-06-29 11:07:23 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:07:23 [INFO] Mode: development
+2025-06-29 11:07:23 [INFO] Node: v22.13.0
+2025-06-29 11:07:50 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:08:44 [INFO] Connexion à MongoDB...
+2025-06-29 11:08:44 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:08:44 [INFO] Mode: development
+2025-06-29 11:08:44 [INFO] Node: v22.13.0
+2025-06-29 11:09:14 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:09:34 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:09:35 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:09:53 [INFO] Connexion à MongoDB...
+2025-06-29 11:09:53 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:09:53 [INFO] Mode: development
+2025-06-29 11:09:53 [INFO] Node: v22.13.0
+2025-06-29 11:10:16 [INFO] Connexion à MongoDB...
+2025-06-29 11:10:16 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:10:16 [INFO] Mode: development
+2025-06-29 11:10:16 [INFO] Node: v22.13.0
+2025-06-29 11:10:57 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:11:27 [INFO] Connexion à MongoDB...
+2025-06-29 11:11:27 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:11:27 [INFO] Mode: development
+2025-06-29 11:11:27 [INFO] Node: v22.13.0
+2025-06-29 11:11:42 [INFO] Connexion à MongoDB...
+2025-06-29 11:11:42 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:11:42 [INFO] Mode: development
+2025-06-29 11:11:42 [INFO] Node: v22.13.0
+2025-06-29 11:12:21 [WARN] Mot de passe incorrect pour l'utilisateur: admin@ophrus.com
+2025-06-29 11:14:05 [INFO] Connexion à MongoDB...
+2025-06-29 11:14:05 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:14:05 [INFO] Mode: development
+2025-06-29 11:14:05 [INFO] Node: v22.13.0
+2025-06-29 11:15:49 [INFO] Connexion à MongoDB...
+2025-06-29 11:15:50 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:15:50 [INFO] Mode: development
+2025-06-29 11:15:50 [INFO] Node: v22.13.0
+2025-06-29 11:16:47 [INFO] Connexion à MongoDB...
+2025-06-29 11:16:47 [INFO] Démarrage de l'application Ophrus-Immo
+2025-06-29 11:16:47 [INFO] Mode: development
+2025-06-29 11:16:47 [INFO] Node: v22.13.0
+2025-06-29 11:17:51 [WARN] Accès non autorisé: Token manquant
+2025-06-29 11:17:59 [WARN] Accès non autorisé: Token manquant
+2025-06-29 11:18:13 [WARN] Route non trouvée: POST /api/auth/login
+2025-06-29 11:19:05 [WARN] Route non trouvée: POST /api/auth/login
+2025-06-29 11:19:11 [WARN] Route non trouvée: GET /api/test
+2025-06-29 11:30:10 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:10 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:10 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:10 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:10 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:11 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:11 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:11 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:12 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:22 [WARN] Déconnecté de MongoDB
+2025-06-29 11:30:38 [INFO] Reconnecté à MongoDB
+2025-06-29 11:30:38 [INFO] Reconnecté à MongoDB
+2025-06-29 11:30:38 [INFO] Reconnecté à MongoDB
+2025-06-29 11:30:39 [INFO] Reconnecté à MongoDB
