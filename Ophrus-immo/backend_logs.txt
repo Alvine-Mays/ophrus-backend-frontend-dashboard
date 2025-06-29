@@ -13,3 +13,5 @@ MongoDB connecté: localhost
 ⚡ Mode: development
 2025-06-29 11:30:27 [[33MWARN[39M] [33mDéconnecté de MongoDB[39m
 2025-06-29 11:30:39 [[36MINFO[39M] [36mReconnecté à MongoDB[39m
+2025-06-29 13:21:39 [[33MWARN[39M] [33mDéconnecté de MongoDB[39m
+2025-06-29 13:22:38 [[36MINFO[39M] [36mReconnecté à MongoDB[39m

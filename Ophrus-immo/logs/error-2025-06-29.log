@@ -150,3 +150,91 @@
     at Console.log (/home/ubuntu/Ophrus-immo/node_modules/winston/lib/winston/transports/console.js:87:23)
     at Console._write (/home/ubuntu/Ophrus-immo/node_modules/winston-transport/modern.js:103:17)
     at doWrite (/home/ubuntu/Ophrus-immo/node_modules/readable-stream/lib/_stream_writable.js:390:139)
+2025-06-29 13:14:39 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:14:39 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:14:39 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:14:39 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:15:01 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:15:01 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:15:01 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
+2025-06-29 13:15:01 [ERROR] Erreur serveur: Error: Origine non autorisée
+    at origin (/home/ubuntu/Ophrus-immo/middlewares/security.js:103:18)
+    at /home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:219:13
+    at optionsCallback (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:199:9)
+    at corsMiddleware (/home/ubuntu/Ophrus-immo/node_modules/cors/lib/index.js:204:7)
+    at Layer.handleRequest (/home/ubuntu/Ophrus-immo/node_modules/router/lib/layer.js:152:17)
+    at trimPrefix (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:342:13)
+    at /home/ubuntu/Ophrus-immo/node_modules/router/index.js:297:9
+    at processParams (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:582:12)
+    at next (/home/ubuntu/Ophrus-immo/node_modules/router/index.js:291:5)
+    at internalNext (/home/ubuntu/Ophrus-immo/node_modules/helmet/index.cjs:531:6)
