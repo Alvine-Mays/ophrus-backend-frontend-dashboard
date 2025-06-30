@@ -66,7 +66,7 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: 'Téléphone',
-      details: '+33 1 23 45 67 89',
+      details: '+242 06 123 45 67',
       subtitle: 'Lun-Ven 9h-18h',
     },
     {
@@ -139,7 +139,7 @@ const ContactPage = () => {
                   name="telephone"
                   value={formData.telephone}
                   onChange={handleChange}
-                  placeholder="+33 1 23 45 67 89"
+                  placeholder="+242 06 123 45 67"
                 />
                 
                 <Input
@@ -226,7 +226,7 @@ const ContactPage = () => {
               <Button
                 variant="secondary"
                 className="bg-white text-blue-primary hover:bg-gray-100"
-                onClick={() => window.location.href = 'tel:+33123456789'}
+                onClick={() => window.location.href = 'tel:+242061234567'}
               >
                 <Phone className="w-4 h-4 mr-2" />
                 Appeler maintenant

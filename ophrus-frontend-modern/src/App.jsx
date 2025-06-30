@@ -10,6 +10,7 @@ import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 
 // Pages
+import IntroPage from './pages/IntroPage';
 import HomePage from './pages/HomePage';
 import PropertiesPage from './pages/PropertiesPage';
 import PropertyDetailPage from './pages/PropertyDetailPage';
@@ -38,79 +39,87 @@ function App() {
       <PropertyProvider>
         <MessageProvider>
           <Router>
-            <div className="min-h-screen bg-gray-50">
-              <Navbar />
-              <main className="flex-1">
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/properties" element={<PropertiesPage />} />
-                  <Route path="/properties/:id" element={<PropertyDetailPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                  <Route path="/reset-password" element={<ResetPasswordPage />} />
-                  <Route path="/contact" element={<ContactPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  
-                  {/* Protected Routes */}
-                  <Route path="/dashboard" element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/profile" element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/favorites" element={
-                    <ProtectedRoute>
-                      <FavoritesPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/messages" element={
-                    <ProtectedRoute>
-                      <MessagesPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/add-property" element={
-                    <ProtectedRoute>
-                      <AddPropertyPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/edit-property/:id" element={
-                    <ProtectedRoute>
-                      <EditPropertyPage />
-                    </ProtectedRoute>
-                  } />
-                  
-                  {/* 404 Route */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </main>
-              <Footer />
-              <Toaster 
-                position="top-right"
-                toastOptions={{
-                  duration: 4000,
+            <Routes>
+              {/* Page de présentation (sans layout) */}
+              <Route path="/" element={<IntroPage />} />
+              
+              {/* Routes avec layout complet */}
+              <Route path="/*" element={
+                <div className="min-h-screen bg-gray-50">
+                  <Navbar />
+                  <main className="flex-1">
+                    <Routes>
+                      {/* Public Routes */}
+                      <Route path="/home" element={<HomePage />} />
+                      <Route path="/properties" element={<PropertiesPage />} />
+                      <Route path="/properties/:id" element={<PropertyDetailPage />} />
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/register" element={<RegisterPage />} />
+                      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                      <Route path="/reset-password" element={<ResetPasswordPage />} />
+                      <Route path="/contact" element={<ContactPage />} />
+                      <Route path="/about" element={<AboutPage />} />
+                      
+                      {/* Protected Routes */}
+                      <Route path="/dashboard" element={
+                        <ProtectedRoute>
+                          <DashboardPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/profile" element={
+                        <ProtectedRoute>
+                          <ProfilePage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/favorites" element={
+                        <ProtectedRoute>
+                          <FavoritesPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/messages" element={
+                        <ProtectedRoute>
+                          <MessagesPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/add-property" element={
+                        <ProtectedRoute>
+                          <AddPropertyPage />
+                        </ProtectedRoute>
+                      } />
+                      <Route path="/edit-property/:id" element={
+                        <ProtectedRoute>
+                          <EditPropertyPage />
+                        </ProtectedRoute>
+                      } />
+                      
+                      {/* 404 Route */}
+                      <Route path="*" element={<NotFoundPage />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                </div>
+              } />
+            </Routes>
+            <Toaster 
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: '#363636',
+                  color: '#fff',
+                },
+                success: {
                   style: {
-                    background: '#363636',
-                    color: '#fff',
+                    background: '#10b981',
                   },
-                  success: {
-                    style: {
-                      background: '#10b981',
-                    },
+                },
+                error: {
+                  style: {
+                    background: '#ef4444',
                   },
-                  error: {
-                    style: {
-                      background: '#ef4444',
-                    },
-                  },
-                }}
-              />
-            </div>
+                },
+              }}
+            />
           </Router>
         </MessageProvider>
       </PropertyProvider>

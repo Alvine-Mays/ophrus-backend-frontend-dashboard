@@ -153,7 +153,7 @@ const RegisterPage = () => {
                 value={formData.telephone}
                 onChange={handleChange}
                 error={errors.telephone}
-                placeholder="+33 1 23 45 67 89"
+                placeholder="+242 06 123 45 67"
                 className="pl-10"
               />
               <Phone className="absolute left-3 top-9 w-5 h-5 text-gray-400" />

@@ -210,7 +210,7 @@ const EditPropertyPage = () => {
               </div>
               
               <Input
-                label="Prix (€)"
+                label="Prix (CFA)"
                 type="number"
                 name="prix"
                 value={formData.prix}

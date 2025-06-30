@@ -305,7 +305,7 @@ const PropertyDetailPage = () => {
                 <div className="space-y-2">
                   <div className="flex items-center space-x-2 text-gray-600">
                     <Phone className="w-4 h-4" />
-                    <span>{property.proprietaire?.telephone || '+33 1 23 45 67 89'}</span>
+                    <span>{property.proprietaire?.telephone || '+242 06 123 45 67'}</span>
                   </div>
                   <div className="flex items-center space-x-2 text-gray-600">
                     <Mail className="w-4 h-4" />
@@ -324,7 +324,7 @@ const PropertyDetailPage = () => {
                 <Button 
                   variant="outline" 
                   className="w-full"
-                  onClick={() => window.location.href = `tel:${property.proprietaire?.telephone || '+33123456789'}`}
+                  onClick={() => window.location.href = `tel:${property.proprietaire?.telephone || '+242061234567'}`}
                 >
                   <Phone className="w-4 h-4 mr-2" />
                   Appeler maintenant
@@ -398,7 +398,7 @@ const PropertyDetailPage = () => {
             <input
               type="tel"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-              placeholder="+33 1 23 45 67 89"
+              placeholder="+242 06 123 45 67"
             />
           </div>
           <div>

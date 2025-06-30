@@ -150,7 +150,7 @@ export const uploadImage = async (file) => {
 export const formatPrice = (price) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: 'EUR',
+    currency: 'XAF',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price);
