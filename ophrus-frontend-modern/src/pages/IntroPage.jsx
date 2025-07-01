@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Home, Search, Shield, Users, Clock, CheckCircle } from 'lucide-react';
 
 const IntroPage = () => {
-  const [timeLeft, setTimeLeft] = useState(10); // 10 secondes de minuterie
+  const [timeLeft, setTimeLeft] = useState(60); // 1 minute de minuterie
   const [showSkipButton, setShowSkipButton] = useState(false);
   const navigate = useNavigate();
 
