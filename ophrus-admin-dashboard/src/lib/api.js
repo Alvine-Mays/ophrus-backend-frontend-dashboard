@@ -1,193 +1,256 @@
-const API_BASE_URL = 'http://localhost:5002/api';
+import axios from 'axios';
 
-// Configuration par défaut pour les requêtes
-const defaultConfig = {
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5002/api';
+
+// Configuration d'axios
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
-};
+});
 
-// Fonction utilitaire pour les requêtes API
-const apiRequest = async (endpoint, options = {}) => {
-  const url = `${API_BASE_URL}${endpoint}`;
-  
-  // Récupérer le token depuis le localStorage
-  const token = localStorage.getItem('token');
-  
-  const config = {
-    ...defaultConfig,
-    ...options,
-    headers: {
-      ...defaultConfig.headers,
-      ...options.headers,
-      ...(token && { Authorization: `Bearer ${token}` }),
-    },
-  };
+// Intercepteur pour ajouter le token d'authentification
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-  try {
-    const response = await fetch(url, config);
-    
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+// Intercepteur pour gérer les réponses et erreurs
+api.interceptors.response.use(
+  (response) => {
+    return response.data;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expiré ou invalide
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
     }
     
-    return await response.json();
-  } catch (error) {
-    console.error('API Request Error:', error);
-    throw error;
+    const errorMessage = error.response?.data?.message || error.message || 'Une erreur est survenue';
+    return Promise.reject(new Error(errorMessage));
   }
-};
+);
 
 // Services d'authentification
 export const authAPI = {
   login: async (credentials) => {
-    return apiRequest('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
+    const response = await api.post('/auth/login', credentials);
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', JSON.stringify(response.user));
+    }
+    return response;
   },
-  
+
   logout: async () => {
-    return apiRequest('/users/logout', {
-      method: 'POST',
-    });
+    try {
+      await api.post('/auth/logout');
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
   },
-  
-  getProfile: async () => {
-    return apiRequest('/users/profil');
-  },
-};
 
-// Services d'administration
-export const adminAPI = {
-  // Dashboard
-  getDashboardStats: async () => {
-    return apiRequest('/admin/dashboard/stats');
+  getCurrentUser: async () => {
+    return await api.get('/auth/me');
   },
-  
-  // Propriétés
-  getAllProperties: async (params = {}) => {
-    const queryString = new URLSearchParams(params).toString();
-    return apiRequest(`/admin/properties${queryString ? `?${queryString}` : ''}`);
-  },
-  
-  getPropertyById: async (id) => {
-    return apiRequest(`/admin/properties/${id}`);
-  },
-  
-  updatePropertyStatus: async (id, status) => {
-    return apiRequest(`/admin/properties/${id}/status`, {
-      method: 'PUT',
-      body: JSON.stringify({ status }),
-    });
-  },
-  
-  deleteProperty: async (id) => {
-    return apiRequest(`/admin/properties/${id}`, {
-      method: 'DELETE',
-    });
-  },
-  
-  // Utilisateurs
-  getAllUsers: async (params = {}) => {
-    const queryString = new URLSearchParams(params).toString();
-    return apiRequest(`/admin/users${queryString ? `?${queryString}` : ''}`);
-  },
-  
-  getUserById: async (id) => {
-    return apiRequest(`/admin/users/${id}`);
-  },
-  
-  updateUser: async (id, userData) => {
-    return apiRequest(`/admin/users/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(userData),
-    });
-  },
-  
-  updateUserRole: async (id, role) => {
-    return apiRequest(`/admin/users/${id}/role`, {
-      method: 'PUT',
-      body: JSON.stringify({ role }),
-    });
-  },
-  
-  deleteUser: async (id) => {
-    return apiRequest(`/admin/users/${id}`, {
-      method: 'DELETE',
-    });
-  },
-  
-  restoreUser: async (id) => {
-    return apiRequest(`/admin/users/${id}/restore`, {
-      method: 'PATCH',
-    });
-  },
-  
-  // Messages
-  getAllMessages: async (params = {}) => {
-    const queryString = new URLSearchParams(params).toString();
-    return apiRequest(`/admin/messages${queryString ? `?${queryString}` : ''}`);
-  },
-  
-  getMessageById: async (id) => {
-    return apiRequest(`/admin/messages/${id}`);
-  },
-  
-  updateMessageStatus: async (id, isRead) => {
-    return apiRequest(`/admin/messages/${id}/status`, {
-      method: 'PUT',
-      body: JSON.stringify({ isRead }),
-    });
-  },
-  
-  deleteMessage: async (id) => {
-    return apiRequest(`/admin/messages/${id}`, {
-      method: 'DELETE',
-    });
-  },
-  
-  // Analytics
-  getPropertyAnalytics: async () => {
-    return apiRequest('/admin/analytics/properties');
-  },
-  
-  getUserAnalytics: async () => {
-    return apiRequest('/admin/analytics/users');
-  },
-  
-  getRevenueAnalytics: async () => {
-    return apiRequest('/admin/analytics/revenue');
-  },
-  
-  // Paramètres
-  getSystemSettings: async () => {
-    return apiRequest('/admin/settings');
-  },
-  
-  updateSystemSettings: async (settings) => {
-    return apiRequest('/admin/settings', {
-      method: 'PUT',
-      body: JSON.stringify(settings),
-    });
-  },
-};
 
-// Service utilitaire pour vérifier si l'utilisateur est admin
-export const checkAdminRole = async () => {
-  try {
-    const response = await authAPI.getProfile();
-    return response.data?.role === 'admin';
-  } catch (error) {
-    console.error('Erreur lors de la vérification du rôle admin:', error);
-    return false;
+  refreshToken: async () => {
+    return await api.post('/auth/refresh');
   }
 };
 
-export default {
-  authAPI,
-  adminAPI,
-  checkAdminRole,
+// Services des propriétés
+export const propertiesAPI = {
+  getAll: async (params = {}) => {
+    return await api.get('/properties', { params });
+  },
+
+  getById: async (id) => {
+    return await api.get(`/properties/${id}`);
+  },
+
+  create: async (propertyData) => {
+    return await api.post('/properties', propertyData);
+  },
+
+  update: async (id, propertyData) => {
+    return await api.put(`/properties/${id}`, propertyData);
+  },
+
+  delete: async (id) => {
+    return await api.delete(`/properties/${id}`);
+  },
+
+  uploadImages: async (id, formData) => {
+    return await api.post(`/properties/${id}/images`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  },
+
+  deleteImage: async (propertyId, imageId) => {
+    return await api.delete(`/properties/${propertyId}/images/${imageId}`);
+  },
+
+  getStats: async () => {
+    return await api.get('/properties/stats');
+  }
 };
+
+// Services des utilisateurs
+export const usersAPI = {
+  getAll: async (params = {}) => {
+    return await api.get('/users', { params });
+  },
+
+  getById: async (id) => {
+    return await api.get(`/users/${id}`);
+  },
+
+  create: async (userData) => {
+    return await api.post('/users', userData);
+  },
+
+  update: async (id, userData) => {
+    return await api.put(`/users/${id}`, userData);
+  },
+
+  delete: async (id) => {
+    return await api.delete(`/users/${id}`);
+  },
+
+  updateRole: async (id, role) => {
+    return await api.patch(`/users/${id}/role`, { role });
+  },
+
+  getStats: async () => {
+    return await api.get('/users/stats');
+  }
+};
+
+// Services des messages/contacts
+export const messagesAPI = {
+  getAll: async (params = {}) => {
+    return await api.get('/messages', { params });
+  },
+
+  getById: async (id) => {
+    return await api.get(`/messages/${id}`);
+  },
+
+  markAsRead: async (id) => {
+    return await api.patch(`/messages/${id}/read`);
+  },
+
+  reply: async (id, replyData) => {
+    return await api.post(`/messages/${id}/reply`, replyData);
+  },
+
+  delete: async (id) => {
+    return await api.delete(`/messages/${id}`);
+  },
+
+  getStats: async () => {
+    return await api.get('/messages/stats');
+  }
+};
+
+// Services d'analytics
+export const analyticsAPI = {
+  getDashboardStats: async () => {
+    return await api.get('/analytics/dashboard');
+  },
+
+  getPropertyViews: async (period = '30d') => {
+    return await api.get('/analytics/property-views', { params: { period } });
+  },
+
+  getUserActivity: async (period = '30d') => {
+    return await api.get('/analytics/user-activity', { params: { period } });
+  },
+
+  getSearchStats: async (period = '30d') => {
+    return await api.get('/analytics/search-stats', { params: { period } });
+  },
+
+  getRevenueStats: async (period = '30d') => {
+    return await api.get('/analytics/revenue', { params: { period } });
+  }
+};
+
+// Services de configuration
+export const settingsAPI = {
+  getAll: async () => {
+    return await api.get('/settings');
+  },
+
+  update: async (settings) => {
+    return await api.put('/settings', settings);
+  },
+
+  uploadLogo: async (formData) => {
+    return await api.post('/settings/logo', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
+};
+
+// Services de sauvegarde
+export const backupAPI = {
+  create: async () => {
+    return await api.post('/backup/create');
+  },
+
+  getAll: async () => {
+    return await api.get('/backup/list');
+  },
+
+  restore: async (backupId) => {
+    return await api.post(`/backup/restore/${backupId}`);
+  },
+
+  delete: async (backupId) => {
+    return await api.delete(`/backup/${backupId}`);
+  },
+
+  download: async (backupId) => {
+    const response = await api.get(`/backup/download/${backupId}`, {
+      responseType: 'blob'
+    });
+    return response;
+  }
+};
+
+// Services de logs
+export const logsAPI = {
+  getAll: async (params = {}) => {
+    return await api.get('/logs', { params });
+  },
+
+  getByLevel: async (level, params = {}) => {
+    return await api.get(`/logs/level/${level}`, { params });
+  },
+
+  clear: async () => {
+    return await api.delete('/logs');
+  }
+};
+
+export default api;
 

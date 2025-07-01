@@ -1,0 +1,125 @@
+groups:
+  - name: ophrus_alerts
+    rules:
+      # Alertes Backend
+      - alert: BackendDown
+        expr: up{job="ophrus-backend"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Backend Ophrus est down"
+          description: "Le backend Ophrus n'est pas accessible depuis {{ $labels.instance }}"
+
+      - alert: HighResponseTime
+        expr: http_request_duration_seconds{quantile="0.95"} > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Temps de réponse élevé"
+          description: "Le temps de réponse du 95e percentile est de {{ $value }}s"
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taux d'erreur élevé"
+          description: "Le taux d'erreur 5xx est de {{ $value | humanizePercentage }}"
+
+      # Alertes Base de données
+      - alert: MongoDBDown
+        expr: up{job="mongodb"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "MongoDB est down"
+          description: "La base de données MongoDB n'est pas accessible"
+
+      - alert: HighDatabaseConnections
+        expr: mongodb_connections{state="current"} > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Nombre élevé de connexions MongoDB"
+          description: "{{ $value }} connexions actives sur MongoDB"
+
+      # Alertes Redis
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis est down"
+          description: "Le cache Redis n'est pas accessible"
+
+      - alert: HighRedisMemoryUsage
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Utilisation mémoire Redis élevée"
+          description: "Redis utilise {{ $value | humanizePercentage }} de sa mémoire"
+
+      # Alertes Système
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Utilisation CPU élevée"
+          description: "L'utilisation CPU est de {{ $value }}% sur {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Utilisation mémoire élevée"
+          description: "L'utilisation mémoire est de {{ $value | humanizePercentage }} sur {{ $labels.instance }}"
+
+      - alert: LowDiskSpace
+        expr: (node_filesystem_size_bytes - node_filesystem_free_bytes) / node_filesystem_size_bytes > 0.9
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Espace disque faible"
+          description: "L'espace disque utilisé est de {{ $value | humanizePercentage }} sur {{ $labels.instance }}"
+
+      # Alertes Application
+      - alert: HighUserRegistrations
+        expr: increase(user_registrations_total[1h]) > 100
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: "Pic d'inscriptions utilisateurs"
+          description: "{{ $value }} nouvelles inscriptions dans la dernière heure"
+
+      - alert: LowPropertyViews
+        expr: rate(property_views_total[1h]) < 10
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Faible activité de consultation"
+          description: "Seulement {{ $value }} vues de propriétés par heure"
+
+      - alert: HighContactMessages
+        expr: increase(contact_messages_total[1h]) > 50
+        for: 0m
+        labels:
+          severity: info
+        annotations:
+          summary: "Pic de messages de contact"
+          description: "{{ $value }} nouveaux messages dans la dernière heure"
+
