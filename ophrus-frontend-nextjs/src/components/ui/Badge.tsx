@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '../../lib/utils';
+import { cn } from '@/lib/utils';
 
 interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ const Badge: React.FC<BadgeProps> = ({
 }) => {
   const variants = {
     default: 'bg-gray-100 text-gray-900',
-    primary: 'bg-yellow-500 text-white',
+    primary: 'bg-blue-primary text-white',
     secondary: 'bg-gray-600 text-white',
     success: 'bg-green-500 text-white',
     danger: 'bg-red-500 text-white',

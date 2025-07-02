@@ -4,387 +4,426 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/a
 // Types
 export interface Property {
   _id: string;
-  title: string;
+  titre: string;
   description: string;
-  price: number;
-  currency: string;
-  category: string;
-  city: string;
-  bedrooms: number;
-  bathrooms: number;
-  surface: number;
+  prix: number;
+  ville: string;
+  adresse: string;
+  nombre_chambres: number;
+  nombre_salles_bain: number;
+  superficie: number;
   images: string[];
-  rating: number;
-  featured: boolean;
-  status: 'available' | 'sold' | 'rented';
-  views?: number;
-  favorites?: number;
+  noteMoyenne: number;
+  categorie: string;
   createdAt: string;
-  updatedAt: string;
-  owner: string;
+  garage?: boolean;
+  piscine?: boolean;
+  jardin?: boolean;
 }
 
 export interface User {
   _id: string;
   nom: string;
+  prenom: string;
   email: string;
   telephone: string;
-  role: 'user' | 'agent' | 'admin';
+  role: 'client' | 'agent' | 'admin';
+  dateInscription: string;
   avatar?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface Message {
   _id: string;
-  senderName: string;
-  senderEmail: string;
-  senderPhone?: string;
-  subject: string;
+  expediteur: string;
+  destinataire: string;
+  sujet: string;
   message: string;
-  propertyId?: string;
-  propertyTitle?: string;
-  isRead: boolean;
-  createdAt: string;
+  date: string;
+  lu: boolean;
 }
 
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  message?: string;
-  pagination?: {
-    page: number;
-    totalPages: number;
-    total: number;
-    limit: number;
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+// API Helper Functions
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { Authorization: `Bearer ${token}` })
   };
-}
+};
 
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
-
-export interface RegisterData {
-  nom: string;
-  email: string;
-  telephone: string;
-  password: string;
-}
-
-export interface PropertyFilters {
-  search?: string;
-  category?: string;
-  city?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  bedrooms?: number;
-  bathrooms?: number;
-  featured?: boolean;
-  status?: string;
-}
-
-// API Client
-class ApiClient {
-  private baseURL: string;
-  private token: string | null = null;
-
-  constructor(baseURL: string) {
-    this.baseURL = baseURL;
-    
-    // Get token from localStorage on client side
-    if (typeof window !== 'undefined') {
-      this.token = localStorage.getItem('auth_token');
-    }
+const handleResponse = async (response: Response) => {
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({ message: 'Une erreur est survenue' }));
+    throw new Error(error.message || 'Une erreur est survenue');
   }
+  return response.json();
+};
 
-  private async request<T>(
-    endpoint: string,
-    options: RequestInit = {}
-  ): Promise<ApiResponse<T>> {
-    const url = `${this.baseURL}${endpoint}`;
-    
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    };
+// Auth API
+export const authAPI = {
+  login: async (email: string, password: string): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    return handleResponse(response);
+  },
 
-    if (this.token) {
-      headers.Authorization = `Bearer ${this.token}`;
-    }
+  register: async (userData: {
+    nom: string;
+    prenom: string;
+    email: string;
+    telephone: string;
+    password: string;
+  }): Promise<AuthResponse> => {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData)
+    });
+    return handleResponse(response);
+  },
 
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
+  logout: async (): Promise<void> => {
+    const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  forgotPassword: async (email: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    return handleResponse(response);
+  },
+
+  resetPassword: async (token: string, password: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/auth/reset-password`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, password })
+    });
+    return handleResponse(response);
+  }
+};
+
+// Properties API
+export const propertiesAPI = {
+  getAll: async (params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    category?: string;
+    city?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    bedrooms?: number;
+    sortBy?: string;
+  }): Promise<{ properties: Property[]; total: number; pages: number }> => {
+    const queryParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== '') {
+          queryParams.append(key, value.toString());
+        }
       });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Une erreur est survenue');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('API Error:', error);
-      throw error;
     }
-  }
-
-  setToken(token: string) {
-    this.token = token;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', token);
-    }
-  }
-
-  removeToken() {
-    this.token = null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-    }
-  }
-
-  // Auth endpoints
-  async login(credentials: LoginCredentials): Promise<ApiResponse<{ user: User; token: string }>> {
-    return this.request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
+    
+    const response = await fetch(`${API_BASE_URL}/properties?${queryParams}`, {
+      headers: getAuthHeaders()
     });
-  }
+    return handleResponse(response);
+  },
 
-  async register(userData: RegisterData): Promise<ApiResponse<{ user: User; token: string }>> {
-    return this.request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
+  getById: async (id: string): Promise<Property> => {
+    const response = await fetch(`${API_BASE_URL}/properties/${id}`, {
+      headers: getAuthHeaders()
     });
-  }
+    return handleResponse(response);
+  },
 
-  async logout(): Promise<ApiResponse<null>> {
-    return this.request('/auth/logout', {
+  create: async (propertyData: Omit<Property, '_id' | 'createdAt' | 'noteMoyenne'>): Promise<Property> => {
+    const response = await fetch(`${API_BASE_URL}/properties`, {
       method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(propertyData)
     });
-  }
+    return handleResponse(response);
+  },
 
-  async getProfile(): Promise<ApiResponse<User>> {
-    return this.request('/auth/profile');
-  }
-
-  async updateProfile(userData: Partial<User>): Promise<ApiResponse<User>> {
-    return this.request('/auth/profile', {
+  update: async (id: string, propertyData: Partial<Property>): Promise<Property> => {
+    const response = await fetch(`${API_BASE_URL}/properties/${id}`, {
       method: 'PUT',
-      body: JSON.stringify(userData),
+      headers: getAuthHeaders(),
+      body: JSON.stringify(propertyData)
     });
-  }
+    return handleResponse(response);
+  },
 
-  // Property endpoints
-  async getProperties(
-    page: number = 1,
-    limit: number = 12,
-    filters: PropertyFilters = {}
-  ): Promise<ApiResponse<Property[]>> {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-      ...Object.fromEntries(
-        Object.entries(filters).filter(([_, value]) => value !== undefined && value !== '')
-      ),
-    });
-
-    return this.request(`/properties?${params}`);
-  }
-
-  async getProperty(id: string): Promise<ApiResponse<Property>> {
-    return this.request(`/properties/${id}`);
-  }
-
-  async createProperty(propertyData: Omit<Property, '_id' | 'createdAt' | 'updatedAt' | 'owner'>): Promise<ApiResponse<Property>> {
-    return this.request('/properties', {
-      method: 'POST',
-      body: JSON.stringify(propertyData),
-    });
-  }
-
-  async updateProperty(id: string, propertyData: Partial<Property>): Promise<ApiResponse<Property>> {
-    return this.request(`/properties/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(propertyData),
-    });
-  }
-
-  async deleteProperty(id: string): Promise<ApiResponse<null>> {
-    return this.request(`/properties/${id}`, {
+  delete: async (id: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/properties/${id}`, {
       method: 'DELETE',
+      headers: getAuthHeaders()
     });
-  }
+    return handleResponse(response);
+  },
 
-  async getFeaturedProperties(): Promise<ApiResponse<Property[]>> {
-    return this.request('/properties/featured');
-  }
-
-  async getUserProperties(page: number = 1, limit: number = 12): Promise<ApiResponse<Property[]>> {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
+  getFeatured: async (): Promise<Property[]> => {
+    const response = await fetch(`${API_BASE_URL}/properties/featured`, {
+      headers: getAuthHeaders()
     });
+    return handleResponse(response);
+  },
 
-    return this.request(`/properties/user?${params}`);
-  }
-
-  async toggleFavorite(propertyId: string): Promise<ApiResponse<{ isFavorite: boolean }>> {
-    return this.request(`/properties/${propertyId}/favorite`, {
-      method: 'POST',
+  getRecommended: async (userId: string): Promise<Property[]> => {
+    const response = await fetch(`${API_BASE_URL}/properties/recommended/${userId}`, {
+      headers: getAuthHeaders()
     });
+    return handleResponse(response);
   }
+};
 
-  async getFavorites(): Promise<ApiResponse<Property[]>> {
-    return this.request('/properties/favorites');
-  }
-
-  // Message endpoints
-  async getMessages(page: number = 1, limit: number = 20): Promise<ApiResponse<Message[]>> {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
+// Users API
+export const usersAPI = {
+  getProfile: async (): Promise<User> => {
+    const response = await fetch(`${API_BASE_URL}/users/profile`, {
+      headers: getAuthHeaders()
     });
+    return handleResponse(response);
+  },
 
-    return this.request(`/messages?${params}`);
-  }
-
-  async sendMessage(messageData: {
-    senderName: string;
-    senderEmail: string;
-    senderPhone?: string;
-    subject: string;
-    message: string;
-    propertyId?: string;
-  }): Promise<ApiResponse<Message>> {
-    return this.request('/messages', {
-      method: 'POST',
-      body: JSON.stringify(messageData),
-    });
-  }
-
-  async markMessageAsRead(messageId: string): Promise<ApiResponse<Message>> {
-    return this.request(`/messages/${messageId}/read`, {
+  updateProfile: async (userData: Partial<User>): Promise<User> => {
+    const response = await fetch(`${API_BASE_URL}/users/profile`, {
       method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(userData)
     });
-  }
+    return handleResponse(response);
+  },
 
-  async deleteMessage(messageId: string): Promise<ApiResponse<null>> {
-    return this.request(`/messages/${messageId}`, {
-      method: 'DELETE',
+  changePassword: async (currentPassword: string, newPassword: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/users/change-password`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ currentPassword, newPassword })
     });
-  }
+    return handleResponse(response);
+  },
 
-  // Statistics endpoints
-  async getStats(): Promise<ApiResponse<{
-    totalProperties: number;
-    totalViews: number;
-    totalFavorites: number;
-    totalMessages: number;
-    monthlyRevenue: number;
-    averageRating: number;
-  }>> {
-    return this.request('/stats');
-  }
-
-  async getPropertyViews(propertyId: string): Promise<ApiResponse<{ views: number }>> {
-    return this.request(`/properties/${propertyId}/views`);
-  }
-
-  // File upload endpoints
-  async uploadImage(file: File): Promise<ApiResponse<{ url: string }>> {
+  uploadAvatar: async (file: File): Promise<{ avatarUrl: string }> => {
     const formData = new FormData();
-    formData.append('image', file);
-
-    return this.request('/upload/image', {
+    formData.append('avatar', file);
+    
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/users/avatar`, {
       method: 'POST',
-      body: formData,
-      headers: {}, // Remove Content-Type to let browser set it for FormData
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: formData
     });
-  }
+    return handleResponse(response);
+  },
 
-  async uploadImages(files: File[]): Promise<ApiResponse<{ urls: string[] }>> {
+  getFavorites: async (): Promise<Property[]> => {
+    const response = await fetch(`${API_BASE_URL}/users/favorites`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  addToFavorites: async (propertyId: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/users/favorites/${propertyId}`, {
+      method: 'POST',
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  removeFromFavorites: async (propertyId: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/users/favorites/${propertyId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  }
+};
+
+// Messages API
+export const messagesAPI = {
+  getAll: async (): Promise<Message[]> => {
+    const response = await fetch(`${API_BASE_URL}/messages`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  getById: async (id: string): Promise<Message> => {
+    const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  send: async (messageData: {
+    destinataire: string;
+    sujet: string;
+    message: string;
+  }): Promise<Message> => {
+    const response = await fetch(`${API_BASE_URL}/messages`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(messageData)
+    });
+    return handleResponse(response);
+  },
+
+  markAsRead: async (id: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/messages/${id}/read`, {
+      method: 'PUT',
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  delete: async (id: string): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/messages/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  }
+};
+
+// Contact API
+export const contactAPI = {
+  send: async (contactData: {
+    nom: string;
+    email: string;
+    telephone: string;
+    sujet: string;
+    message: string;
+  }): Promise<{ message: string }> => {
+    const response = await fetch(`${API_BASE_URL}/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(contactData)
+    });
+    return handleResponse(response);
+  }
+};
+
+// Statistics API
+export const statsAPI = {
+  getDashboard: async (): Promise<{
+    totalProperties: number;
+    totalUsers: number;
+    totalMessages: number;
+    recentActivities: any[];
+  }> => {
+    const response = await fetch(`${API_BASE_URL}/stats/dashboard`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  },
+
+  getUserStats: async (): Promise<{
+    favorites: number;
+    views: number;
+    messages: number;
+    properties: number;
+  }> => {
+    const response = await fetch(`${API_BASE_URL}/stats/user`, {
+      headers: getAuthHeaders()
+    });
+    return handleResponse(response);
+  }
+};
+
+// Upload API
+export const uploadAPI = {
+  uploadImages: async (files: File[]): Promise<{ urls: string[] }> => {
     const formData = new FormData();
     files.forEach((file, index) => {
       formData.append(`images`, file);
     });
-
-    return this.request('/upload/images', {
+    
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/upload/images`, {
       method: 'POST',
-      body: formData,
-      headers: {}, // Remove Content-Type to let browser set it for FormData
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` })
+      },
+      body: formData
     });
+    return handleResponse(response);
   }
-}
-
-// Create API client instance
-export const apiClient = new ApiClient(API_BASE_URL);
-
-// Convenience functions
-export const authApi = {
-  login: (credentials: LoginCredentials) => apiClient.login(credentials),
-  register: (userData: RegisterData) => apiClient.register(userData),
-  logout: () => apiClient.logout(),
-  getProfile: () => apiClient.getProfile(),
-  updateProfile: (userData: Partial<User>) => apiClient.updateProfile(userData),
-  setToken: (token: string) => apiClient.setToken(token),
-  removeToken: () => apiClient.removeToken(),
-};
-
-export const propertyApi = {
-  getAll: (page?: number, limit?: number, filters?: PropertyFilters) => 
-    apiClient.getProperties(page, limit, filters),
-  getById: (id: string) => apiClient.getProperty(id),
-  create: (data: Omit<Property, '_id' | 'createdAt' | 'updatedAt' | 'owner'>) => 
-    apiClient.createProperty(data),
-  update: (id: string, data: Partial<Property>) => apiClient.updateProperty(id, data),
-  delete: (id: string) => apiClient.deleteProperty(id),
-  getFeatured: () => apiClient.getFeaturedProperties(),
-  getUserProperties: (page?: number, limit?: number) => 
-    apiClient.getUserProperties(page, limit),
-  toggleFavorite: (id: string) => apiClient.toggleFavorite(id),
-  getFavorites: () => apiClient.getFavorites(),
-  getViews: (id: string) => apiClient.getPropertyViews(id),
-};
-
-export const messageApi = {
-  getAll: (page?: number, limit?: number) => apiClient.getMessages(page, limit),
-  send: (data: {
-    senderName: string;
-    senderEmail: string;
-    senderPhone?: string;
-    subject: string;
-    message: string;
-    propertyId?: string;
-  }) => apiClient.sendMessage(data),
-  markAsRead: (id: string) => apiClient.markMessageAsRead(id),
-  delete: (id: string) => apiClient.deleteMessage(id),
-};
-
-export const statsApi = {
-  getStats: () => apiClient.getStats(),
-};
-
-export const uploadApi = {
-  uploadImage: (file: File) => apiClient.uploadImage(file),
-  uploadImages: (files: File[]) => apiClient.uploadImages(files),
 };
 
 // Error handling utility
-export const handleApiError = (error: any): string => {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
+export const handleAPIError = (error: any) => {
+  console.error('API Error:', error);
+  
+  if (error.message === 'Token expired' || error.message === 'Unauthorized') {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+    return;
   }
   
-  if (error.message) {
-    return error.message;
-  }
-  
-  return 'Une erreur inattendue s\'est produite';
+  return error.message || 'Une erreur est survenue';
 };
 
-export default apiClient;
+// Local storage utilities
+export const storage = {
+  setToken: (token: string) => {
+    localStorage.setItem('token', token);
+  },
+  
+  getToken: () => {
+    return localStorage.getItem('token');
+  },
+  
+  removeToken: () => {
+    localStorage.removeItem('token');
+  },
+  
+  setUser: (user: User) => {
+    localStorage.setItem('user', JSON.stringify(user));
+  },
+  
+  getUser: (): User | null => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  },
+  
+  removeUser: () => {
+    localStorage.removeItem('user');
+  },
+  
+  clear: () => {
+    localStorage.removeItem('token');
+    localStorage.removeUser('user');
+  }
+};
+
+export default {
+  auth: authAPI,
+  properties: propertiesAPI,
+  users: usersAPI,
+  messages: messagesAPI,
+  contact: contactAPI,
+  stats: statsAPI,
+  upload: uploadAPI
+};
 

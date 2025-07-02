@@ -89,7 +89,7 @@ const Footer = () => {
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-blue-primary flex-shrink-0" />
                 <span className="text-gray-400 text-sm">
-                  Avenue de l'Indépendance<br />
+                  Avenue Amiral Cabral<br />
                   Brazzaville, Congo
                 </span>
               </div>

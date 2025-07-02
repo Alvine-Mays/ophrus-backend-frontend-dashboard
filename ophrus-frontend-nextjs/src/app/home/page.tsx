@@ -2,67 +2,105 @@
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, TrendingUp, Shield, Award, ArrowRight, Star, MapPin } from 'lucide-react';
-import PropertyCard from '../../components/properties/PropertyCard';
-import Button from '../../components/ui/Button';
-import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import Button from '@/components/ui/Button';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
+import { formatPrice } from '@/lib/utils';
 
-export default function HomePage() {
+// Mock data for featured properties
+const mockFeaturedProperties = [
+  {
+    _id: '1',
+    titre: 'Villa Moderne avec Piscine',
+    description: 'Magnifique villa moderne avec piscine et jardin paysager',
+    prix: 450000000,
+    ville: 'Pointe-Noire',
+    nombre_chambres: 4,
+    nombre_salles_bain: 3,
+    superficie: 250,
+    images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
+    noteMoyenne: 4.8,
+    categorie: 'Villa'
+  },
+  {
+    _id: '2',
+    titre: 'Appartement de Luxe Centre-ville',
+    description: 'Appartement de standing en plein centre-ville',
+    prix: 180000000,
+    ville: 'Brazzaville',
+    nombre_chambres: 3,
+    nombre_salles_bain: 2,
+    superficie: 120,
+    images: ['https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
+    noteMoyenne: 4.6,
+    categorie: 'Appartement'
+  },
+  {
+    _id: '3',
+    titre: 'Maison Familiale avec Jardin',
+    description: 'Parfaite pour une famille, avec grand jardin',
+    prix: 320000000,
+    ville: 'Dolisie',
+    nombre_chambres: 5,
+    nombre_salles_bain: 3,
+    superficie: 200,
+    images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'],
+    noteMoyenne: 4.7,
+    categorie: 'Maison'
+  }
+];
+
+// Simple PropertyCard component
+const PropertyCard = ({ property }: { property: any }) => (
+  <div className="property-card">
+    <div className="property-card-image">
+      <img src={property.images[0]} alt={property.titre} />
+      <div className="gradient-overlay"></div>
+      <div className="absolute top-4 left-4">
+        <span className="bg-blue-primary text-white px-2 py-1 rounded text-sm font-medium">
+          {property.categorie}
+        </span>
+      </div>
+      <div className="absolute top-4 right-4">
+        <div className="flex items-center bg-white bg-opacity-90 rounded px-2 py-1">
+          <Star className="w-4 h-4 text-yellow-500 mr-1" />
+          <span className="text-sm font-medium">{property.noteMoyenne}</span>
+        </div>
+      </div>
+    </div>
+    <div className="p-6">
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">{property.titre}</h3>
+      <div className="flex items-center text-gray-600 mb-3">
+        <MapPin className="w-4 h-4 mr-1" />
+        <span>{property.ville}</span>
+      </div>
+      <p className="text-gray-600 mb-4 line-clamp-2">{property.description}</p>
+      <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+        <span>{property.nombre_chambres} chambres</span>
+        <span>{property.nombre_salles_bain} salles de bain</span>
+        <span>{property.superficie} m²</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="text-2xl font-bold text-blue-primary">
+          {formatPrice(property.prix)}
+        </div>
+        <Button size="sm">Voir détails</Button>
+      </div>
+    </div>
+  </div>
+);
+
+const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [featuredProperties, setFeaturedProperties] = useState(mockFeaturedProperties);
   const [loading, setLoading] = useState(false);
-
-  // Données simulées pour les propriétés en vedette
-  const mockProperties = [
-    {
-      _id: '1',
-      titre: 'Villa Moderne avec Piscine',
-      prix: 450000000,
-      localisation: 'Pointe-Noire, Congo',
-      type: 'Villa',
-      chambres: 4,
-      sallesDeBain: 3,
-      superficie: 250,
-      images: ['/images/property-1.jpg'],
-      noteMoyenne: 4.8,
-      description: 'Magnifique villa moderne avec piscine et jardin paysager'
-    },
-    {
-      _id: '2',
-      titre: 'Appartement de Luxe Centre-ville',
-      prix: 180000000,
-      localisation: 'Brazzaville, Congo',
-      type: 'Appartement',
-      chambres: 3,
-      sallesDeBain: 2,
-      superficie: 120,
-      images: ['/images/property-2.jpg'],
-      noteMoyenne: 4.6,
-      description: 'Appartement de standing en plein centre-ville'
-    },
-    {
-      _id: '3',
-      titre: 'Maison Familiale avec Jardin',
-      prix: 320000000,
-      localisation: 'Dolisie, Congo',
-      type: 'Maison',
-      chambres: 5,
-      sallesDeBain: 3,
-      superficie: 200,
-      images: ['/images/property-3.jpg'],
-      noteMoyenne: 4.7,
-      description: 'Parfaite pour une famille nombreuse'
-    }
-  ];
-
-  useEffect(() => {
-    setFeaturedProperties(mockProperties);
-  }, []);
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `/properties?search=${encodeURIComponent(searchTerm)}`;
+      router.push(`/properties?search=${encodeURIComponent(searchTerm)}`);
     }
   };
 
@@ -257,5 +295,7 @@ export default function HomePage() {
       </section>
     </div>
   );
-}
+};
+
+export default HomePage;
 

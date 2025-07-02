@@ -4,12 +4,22 @@ const nextConfig = {
     appDir: true,
   },
   images: {
-    domains: ['images.unsplash.com', 'localhost'],
-    formats: ['image/webp', 'image/avif'],
+    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
-  compress: true,
-  poweredByHeader: false,
-  generateEtags: false,
   async headers() {
     return [
       {
@@ -29,18 +39,9 @@ const nextConfig = {
           },
         ],
       },
-    ];
+    ]
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/',
-        permanent: false,
-      },
-    ];
-  },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
 

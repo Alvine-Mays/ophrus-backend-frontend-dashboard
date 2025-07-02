@@ -4,22 +4,31 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X, Home, Search, Heart, User, LogOut, Plus, Settings, MessageSquare } from 'lucide-react';
-import Button from '../ui/Button';
-import Badge from '../ui/Badge';
-import { cn } from '../../lib/utils';
+import Button from '@/components/ui/Button';
+import Badge from '@/components/ui/Badge';
+import { cn } from '@/lib/utils';
+
+// Mock auth context for now - will be replaced with actual context
+const useAuth = () => ({
+  isAuthenticated: false,
+  user: null,
+  logout: async () => {}
+});
+
+// Mock message context for now - will be replaced with actual context
+const useMessage = () => ({
+  unreadCount: 0
+});
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
+  const { unreadCount } = useMessage();
   const pathname = usePathname();
   const router = useRouter();
 
-  // Simuler l'état d'authentification - à remplacer par votre logique d'auth
-  const isAuthenticated = false;
-  const user = null;
-  const unreadCount = 0;
-
   const handleLogout = async () => {
-    // Logique de déconnexion à implémenter
+    await logout();
     router.push('/home');
     setIsMenuOpen(false);
   };
@@ -84,7 +93,7 @@ const Navbar = () => {
                   >
                     {link.icon && <link.icon className="w-4 h-4" />}
                     <span>{link.label}</span>
-                    {link.badge && link.badge > 0 && (
+                    {link.badge > 0 && (
                       <Badge variant="primary" size="sm" className="ml-1">
                         {link.badge}
                       </Badge>
@@ -170,7 +179,7 @@ const Navbar = () => {
                           {link.icon && <link.icon className="w-4 h-4" />}
                           <span>{link.label}</span>
                         </div>
-                        {link.badge && link.badge > 0 && (
+                        {link.badge > 0 && (
                           <Badge variant="primary" size="sm">
                             {link.badge}
                           </Badge>

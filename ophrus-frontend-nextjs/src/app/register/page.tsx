@@ -3,28 +3,35 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Mail, Lock, User, Phone } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, User, Phone, ArrowRight, CheckCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 import { validateEmail, validatePhone } from '@/lib/utils';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     nom: '',
+    prenom: '',
     email: '',
     telephone: '',
     password: '',
     confirmPassword: '',
+    acceptTerms: false,
+    newsletter: true
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  
+  const [step, setStep] = useState(1);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: type === 'checkbox' ? checked : value 
+    }));
     
     // Clear error when user starts typing
     if (errors[name]) {
@@ -32,7 +39,7 @@ const RegisterPage = () => {
     }
   };
 
-  const validateForm = () => {
+  const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
 
     if (!formData.nom.trim()) {
@@ -41,274 +48,464 @@ const RegisterPage = () => {
       newErrors.nom = 'Le nom doit contenir au moins 2 caractères';
     }
 
-    if (!formData.email) {
+    if (!formData.prenom.trim()) {
+      newErrors.prenom = 'Le prénom est requis';
+    } else if (formData.prenom.trim().length < 2) {
+      newErrors.prenom = 'Le prénom doit contenir au moins 2 caractères';
+    }
+
+    if (!formData.email.trim()) {
       newErrors.email = 'L\'email est requis';
     } else if (!validateEmail(formData.email)) {
       newErrors.email = 'Format d\'email invalide';
     }
 
-    if (!formData.telephone) {
+    if (!formData.telephone.trim()) {
       newErrors.telephone = 'Le téléphone est requis';
     } else if (!validatePhone(formData.telephone)) {
       newErrors.telephone = 'Format de téléphone invalide';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Le mot de passe est requis';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères';
-    }
-
-    if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'La confirmation du mot de passe est requise';
-    } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateStep2 = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!formData.password.trim()) {
+      newErrors.password = 'Le mot de passe est requis';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères';
+    } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+      newErrors.password = 'Le mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre';
+    }
+
+    if (!formData.confirmPassword.trim()) {
+      newErrors.confirmPassword = 'Veuillez confirmer votre mot de passe';
+    } else if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
+    }
+
+    if (!formData.acceptTerms) {
+      newErrors.acceptTerms = 'Vous devez accepter les conditions d\'utilisation';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleNextStep = () => {
+    if (step === 1 && validateStep1()) {
+      setStep(2);
+    }
+  };
+
+  const handlePrevStep = () => {
+    setStep(1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    if (!validateStep2()) {
+      return;
+    }
 
     setLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      alert('Compte créé avec succès ! Redirection vers le tableau de bord...');
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Mock successful registration
+      localStorage.setItem('user', JSON.stringify({
+        id: '1',
+        nom: formData.nom,
+        prenom: formData.prenom,
+        email: formData.email,
+        telephone: formData.telephone,
+        role: 'client'
+      }));
+      
       router.push('/dashboard');
-    }, 1000);
+    } catch (error) {
+      setErrors({ general: 'Une erreur est survenue lors de l\'inscription' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const passwordStrength = () => {
+    const password = formData.password;
+    let strength = 0;
+    
+    if (password.length >= 8) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/\d/.test(password)) strength++;
+    if (/[^a-zA-Z\d]/.test(password)) strength++;
+    
+    return strength;
+  };
+
+  const getStrengthColor = () => {
+    const strength = passwordStrength();
+    if (strength <= 2) return 'bg-red-500';
+    if (strength <= 3) return 'bg-yellow-500';
+    return 'bg-green-500';
+  };
+
+  const getStrengthText = () => {
+    const strength = passwordStrength();
+    if (strength <= 2) return 'Faible';
+    if (strength <= 3) return 'Moyen';
+    return 'Fort';
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Logo */}
         <div className="flex justify-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-primary to-blue-dark rounded-xl flex items-center justify-center">
+          <div className="w-16 h-16 bg-gradient-to-r from-blue-primary to-blue-dark rounded-full flex items-center justify-center">
             <span className="text-white font-bold text-2xl">O</span>
           </div>
         </div>
-        
         <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
           Créer votre compte
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Ou{' '}
-          <Link
-            href="/login"
-            className="font-medium text-blue-primary hover:text-blue-dark transition-colors"
-          >
+          <Link href="/login" className="font-medium text-blue-primary hover:text-blue-dark">
             connectez-vous à votre compte existant
           </Link>
         </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-xl rounded-xl sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Name */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nom complet
-              </label>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="nom"
-                  value={formData.nom}
-                  onChange={handleChange}
-                  placeholder="Votre nom complet"
-                  className={`w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-primary focus:border-transparent ${
-                    errors.nom ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
-              {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom}</p>}
-            </div>
-
-            {/* Email */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Adresse email
-              </label>
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="votre@email.com"
-                  className={`w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-primary focus:border-transparent ${
-                    errors.email ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-            </div>
-
-            {/* Phone */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Numéro de téléphone
-              </label>
-              <div className="relative">
-                <input
-                  type="tel"
-                  name="telephone"
-                  value={formData.telephone}
-                  onChange={handleChange}
-                  placeholder="+242 06 123 45 67"
-                  className={`w-full pl-10 pr-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-primary focus:border-transparent ${
-                    errors.telephone ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-              </div>
-              {errors.telephone && <p className="text-red-500 text-sm mt-1">{errors.telephone}</p>}
-            </div>
-
-            {/* Password */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mot de passe
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={`w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-primary focus:border-transparent ${
-                    errors.password ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-            </div>
-
-            {/* Confirm Password */}
-            <div className="relative">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirmer le mot de passe
-              </label>
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                  className={`w-full pl-10 pr-10 py-2 border rounded-lg focus:ring-2 focus:ring-blue-primary focus:border-transparent ${
-                    errors.confirmPassword ? 'border-red-500' : 'border-gray-300'
-                  }`}
-                />
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
-            </div>
-
-            {/* Terms and Conditions */}
+        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+          {/* Progress Indicator */}
+          <div className="mb-8">
             <div className="flex items-center">
-              <input
-                id="accept-terms"
-                name="accept-terms"
-                type="checkbox"
-                required
-                className="h-4 w-4 text-blue-primary focus:ring-blue-primary border-gray-300 rounded"
-              />
-              <label htmlFor="accept-terms" className="ml-2 block text-sm text-gray-900">
-                J'accepte les{' '}
-                <Link href="/terms" className="text-blue-primary hover:text-blue-dark">
-                  conditions d'utilisation
-                </Link>{' '}
-                et la{' '}
-                <Link href="/privacy" className="text-blue-primary hover:text-blue-dark">
-                  politique de confidentialité
-                </Link>
-              </label>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step >= 1 ? 'bg-blue-primary text-white' : 'bg-gray-300 text-gray-600'}`}>
+                {step > 1 ? <CheckCircle className="w-5 h-5" /> : '1'}
+              </div>
+              <div className={`flex-1 h-1 mx-2 ${step >= 2 ? 'bg-blue-primary' : 'bg-gray-300'}`}></div>
+              <div className={`flex items-center justify-center w-8 h-8 rounded-full ${step >= 2 ? 'bg-blue-primary text-white' : 'bg-gray-300 text-gray-600'}`}>
+                2
+              </div>
             </div>
+            <div className="flex justify-between mt-2 text-sm text-gray-600">
+              <span>Informations personnelles</span>
+              <span>Sécurité</span>
+            </div>
+          </div>
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              loading={loading}
-              className="w-full"
-              size="lg"
-            >
-              Créer mon compte
-            </Button>
+          {errors.general && (
+            <div className="mb-4 bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md">
+              {errors.general}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            {step === 1 && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="nom" className="block text-sm font-medium text-gray-700">
+                      Nom *
+                    </label>
+                    <div className="mt-1 relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        id="nom"
+                        name="nom"
+                        type="text"
+                        value={formData.nom}
+                        onChange={handleChange}
+                        className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                          errors.nom ? 'border-red-300' : 'border-gray-300'
+                        }`}
+                        placeholder="Votre nom"
+                      />
+                    </div>
+                    {errors.nom && <p className="mt-2 text-sm text-red-600">{errors.nom}</p>}
+                  </div>
+
+                  <div>
+                    <label htmlFor="prenom" className="block text-sm font-medium text-gray-700">
+                      Prénom *
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        id="prenom"
+                        name="prenom"
+                        type="text"
+                        value={formData.prenom}
+                        onChange={handleChange}
+                        className={`appearance-none block w-full px-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                          errors.prenom ? 'border-red-300' : 'border-gray-300'
+                        }`}
+                        placeholder="Votre prénom"
+                      />
+                    </div>
+                    {errors.prenom && <p className="mt-2 text-sm text-red-600">{errors.prenom}</p>}
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    Adresse email *
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                        errors.email ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                      placeholder="votre@email.com"
+                    />
+                  </div>
+                  {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="telephone" className="block text-sm font-medium text-gray-700">
+                    Téléphone *
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Phone className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="telephone"
+                      name="telephone"
+                      type="tel"
+                      value={formData.telephone}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-3 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                        errors.telephone ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                      placeholder="+242 06 123 45 67"
+                    />
+                  </div>
+                  {errors.telephone && <p className="mt-2 text-sm text-red-600">{errors.telephone}</p>}
+                </div>
+
+                <div>
+                  <Button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full flex justify-center items-center"
+                  >
+                    Continuer
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {step === 2 && (
+              <div className="space-y-6">
+                <div>
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    Mot de passe *
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                        errors.password ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                      placeholder="Votre mot de passe"
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button
+                        type="button"
+                        className="text-gray-400 hover:text-gray-500"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  {formData.password && (
+                    <div className="mt-2">
+                      <div className="flex items-center">
+                        <div className="flex-1 bg-gray-200 rounded-full h-2">
+                          <div 
+                            className={`h-2 rounded-full transition-all duration-300 ${getStrengthColor()}`}
+                            style={{ width: `${(passwordStrength() / 5) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="ml-2 text-sm text-gray-600">{getStrengthText()}</span>
+                      </div>
+                    </div>
+                  )}
+                  {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password}</p>}
+                </div>
+
+                <div>
+                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                    Confirmer le mot de passe *
+                  </label>
+                  <div className="mt-1 relative">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-gray-400" />
+                    </div>
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className={`appearance-none block w-full pl-10 pr-10 py-2 border rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-primary focus:border-blue-primary sm:text-sm ${
+                        errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                      }`}
+                      placeholder="Confirmez votre mot de passe"
+                    />
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <button
+                        type="button"
+                        className="text-gray-400 hover:text-gray-500"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-5 w-5" />
+                        ) : (
+                          <Eye className="h-5 w-5" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  {errors.confirmPassword && <p className="mt-2 text-sm text-red-600">{errors.confirmPassword}</p>}
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <input
+                      id="acceptTerms"
+                      name="acceptTerms"
+                      type="checkbox"
+                      checked={formData.acceptTerms}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-blue-primary focus:ring-blue-primary border-gray-300 rounded mt-1"
+                    />
+                    <label htmlFor="acceptTerms" className="ml-2 block text-sm text-gray-900">
+                      J'accepte les{' '}
+                      <Link href="/terms" className="text-blue-primary hover:text-blue-dark">
+                        conditions d'utilisation
+                      </Link>{' '}
+                      et la{' '}
+                      <Link href="/privacy" className="text-blue-primary hover:text-blue-dark">
+                        politique de confidentialité
+                      </Link>
+                    </label>
+                  </div>
+                  {errors.acceptTerms && <p className="text-sm text-red-600">{errors.acceptTerms}</p>}
+
+                  <div className="flex items-start">
+                    <input
+                      id="newsletter"
+                      name="newsletter"
+                      type="checkbox"
+                      checked={formData.newsletter}
+                      onChange={handleChange}
+                      className="h-4 w-4 text-blue-primary focus:ring-blue-primary border-gray-300 rounded mt-1"
+                    />
+                    <label htmlFor="newsletter" className="ml-2 block text-sm text-gray-900">
+                      Je souhaite recevoir les actualités et offres spéciales par email
+                    </label>
+                  </div>
+                </div>
+
+                <div className="flex space-x-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handlePrevStep}
+                    className="flex-1"
+                  >
+                    Retour
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="flex-1 flex justify-center items-center"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <LoadingSpinner size="sm" className="mr-2" />
+                        Création...
+                      </>
+                    ) : (
+                      'Créer mon compte'
+                    )}
+                  </Button>
+                </div>
+              </div>
+            )}
           </form>
 
-          {/* Divider */}
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600">
+              Déjà un compte ?{' '}
+              <Link href="/login" className="font-medium text-blue-primary hover:text-blue-dark">
+                Connectez-vous
+              </Link>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits */}
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-2xl">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4 text-center">
+            Rejoignez des milliers d'utilisateurs satisfaits
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+            <div className="p-4">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Ou s'inscrire avec</span>
-              </div>
+              <h4 className="font-medium text-gray-900 mb-2">Inscription gratuite</h4>
+              <p className="text-sm text-gray-600">Créez votre compte en quelques minutes</p>
             </div>
-
-            {/* Social Login Buttons */}
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
-              >
-                <svg className="w-5 h-5" viewBox="0 0 24 24">
-                  <path
-                    fill="currentColor"
-                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  />
-                  <path
-                    fill="currentColor"
-                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  />
-                </svg>
-                <span className="ml-2">Google</span>
-              </button>
-
-              <button
-                type="button"
-                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                </svg>
-                <span className="ml-2">Facebook</span>
-              </button>
+            <div className="p-4">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <span className="text-blue-primary font-bold">🔒</span>
+              </div>
+              <h4 className="font-medium text-gray-900 mb-2">Données sécurisées</h4>
+              <p className="text-sm text-gray-600">Vos informations sont protégées</p>
+            </div>
+            <div className="p-4">
+              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <span className="text-yellow-600 font-bold">⭐</span>
+              </div>
+              <h4 className="font-medium text-gray-900 mb-2">Service premium</h4>
+              <p className="text-sm text-gray-600">Accès à toutes nos fonctionnalités</p>
             </div>
           </div>
         </div>

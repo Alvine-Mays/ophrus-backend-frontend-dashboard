@@ -7,21 +7,20 @@ import Footer from '@/components/layout/Footer';
 export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Pages qui n'ont pas besoin du layout complet (comme la page d'intro)
-  const noLayoutPages = ['/'];
-  
-  if (noLayoutPages.includes(pathname)) {
+  // Pages qui n'ont pas besoin de navbar/footer
+  const noLayoutPages = ['/login', '/register'];
+  const shouldShowLayout = !noLayoutPages.includes(pathname);
+
+  if (!shouldShowLayout) {
     return <>{children}</>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       <Navbar />
-      <main className="flex-1">
-        {children}
-      </main>
+      <main>{children}</main>
       <Footer />
-    </div>
+    </>
   );
 }
 

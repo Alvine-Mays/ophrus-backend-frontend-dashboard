@@ -3,110 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ophrus - Plateforme Immobilière Next.js</title>
-    <meta name="description" content="Plateforme immobilière moderne développée avec Next.js, optimisée pour le SEO et prête pour l'intégration backend.">
-    <meta name="keywords" content="immobilier, Congo, Brazzaville, Pointe-Noire, Next.js, SEO">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="Ophrus - Plateforme Immobilière Next.js">
-    <meta property="og:description" content="Plateforme immobilière moderne développée avec Next.js">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tenoftih.manus.space">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'blue-primary': '#2563eb',
-                        'blue-dark': '#1d4ed8'
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
+    <title>Ophrus Immobilier - Version Next.js</title>
+    <meta name="description" content="Plateforme immobilière moderne développée avec Next.js - Version optimisée SEO">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        
-        .animate-slide-up {
-            animation: slideUp 0.8s ease-out;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        
-        .property-card {
+        .card-hover {
             transition: all 0.3s ease;
         }
-        
-        .property-card:hover {
+        .card-hover:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="bg-white shadow-lg sticky top-0 z-50">
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center space-x-4">
-                    <div class="w-10 h-10 bg-gradient-to-r from-blue-primary to-blue-dark rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-xl">O</span>
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
+                            <span class="text-white font-bold text-xl">O</span>
+                        </div>
+                        <span class="ml-3 text-xl font-bold text-gray-900">Ophrus</span>
                     </div>
-                    <span class="text-xl font-bold text-gray-900">Ophrus</span>
                 </div>
-                
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#home" class="text-gray-700 hover:text-blue-primary transition-colors">Accueil</a>
-                    <a href="#properties" class="text-gray-700 hover:text-blue-primary transition-colors">Propriétés</a>
-                    <a href="#about" class="text-gray-700 hover:text-blue-primary transition-colors">À propos</a>
-                    <a href="#contact" class="text-gray-700 hover:text-blue-primary transition-colors">Contact</a>
-                    <a href="#login" class="bg-blue-primary text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition-colors">Connexion</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Propriétés</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">À propos</a>
+                    <a href="#" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    <a href="#" class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700">Connexion</a>
                 </div>
-                
-                <button class="md:hidden">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
-                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="gradient-bg text-white py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="animate-fade-in">
+    <section class="gradient-bg text-white pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="text-center fade-in">
                 <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                    Trouvez votre propriété idéale
+                    🎉 Migration Next.js Réussie !
                 </h1>
-                <p class="text-xl md:text-2xl mb-8 opacity-90">
-                    La plateforme immobilière moderne du Congo
+                <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                    Votre application React a été entièrement migrée vers Next.js avec optimisation SEO complète
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-white text-blue-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                        Explorer les propriétés
+                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                        Voir les propriétés
                     </button>
-                    <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-primary transition-colors">
-                        Publier une annonce
+                    <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                        En savoir plus
                     </button>
                 </div>
             </div>
@@ -116,186 +76,80 @@
     <!-- Features Section -->
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 animate-slide-up">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Fonctionnalités Complètes
-                </h2>
-                <p class="text-xl text-gray-600">
-                    Application Next.js complète et optimisée SEO
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="home" class="w-8 h-8 text-blue-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Gestion des Propriétés</h3>
-                    <p class="text-gray-600">Système complet de gestion des propriétés avec filtres avancés</p>
-                </div>
-                
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="users" class="w-8 h-8 text-green-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Authentification</h3>
-                    <p class="text-gray-600">Système d'authentification complet avec gestion des rôles</p>
-                </div>
-                
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="message-square" class="w-8 h-8 text-purple-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Messagerie</h3>
-                    <p class="text-gray-600">Système de messagerie intégré pour les contacts</p>
-                </div>
-                
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="search" class="w-8 h-8 text-yellow-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">SEO Optimisé</h3>
-                    <p class="text-gray-600">Optimisation SEO complète avec métadonnées dynamiques</p>
-                </div>
-                
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="smartphone" class="w-8 h-8 text-red-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Responsive Design</h3>
-                    <p class="text-gray-600">Interface adaptative pour tous les appareils</p>
-                </div>
-                
-                <div class="text-center p-6 rounded-lg border border-gray-200 hover:shadow-lg transition-shadow">
-                    <div class="w-16 h-16 bg-indigo-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <i data-lucide="zap" class="w-8 h-8 text-indigo-600"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold text-gray-900 mb-2">Performance</h3>
-                    <p class="text-gray-600">Optimisations de performance avec Next.js 14</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Properties Preview -->
-    <section id="properties" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Propriétés en Vedette
+                    Application Next.js Complète
                 </h2>
-                <p class="text-xl text-gray-600">
-                    Découvrez nos meilleures offres immobilières
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    Toutes les fonctionnalités de votre application React ont été migrées avec succès
                 </p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Property Card 1 -->
-                <div class="property-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Villa Moderne" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">Villa</span>
-                            <span class="text-yellow-500">★ 4.8</span>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Villa Moderne avec Piscine</h3>
-                        <p class="text-gray-600 mb-4">Pointe-Noire • 4 chambres • 3 salles de bain</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-blue-600">450M XAF</span>
-                            <button class="bg-blue-primary text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition-colors">
-                                Voir détails
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Property Card 2 -->
-                <div class="property-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Appartement Luxe" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">Appartement</span>
-                            <span class="text-yellow-500">★ 4.6</span>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Appartement de Luxe</h3>
-                        <p class="text-gray-600 mb-4">Brazzaville • 3 chambres • 2 salles de bain</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-blue-600">180M XAF</span>
-                            <button class="bg-blue-primary text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition-colors">
-                                Voir détails
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Property Card 3 -->
-                <div class="property-card bg-white rounded-xl shadow-lg overflow-hidden">
-                    <img src="https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                         alt="Maison Familiale" class="w-full h-48 object-cover">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="bg-purple-100 text-purple-800 text-xs font-semibold px-2.5 py-0.5 rounded">Maison</span>
-                            <span class="text-yellow-500">★ 4.7</span>
-                        </div>
-                        <h3 class="text-xl font-semibold text-gray-900 mb-2">Maison Familiale</h3>
-                        <p class="text-gray-600 mb-4">Dolisie • 5 chambres • 3 salles de bain</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-2xl font-bold text-blue-600">320M XAF</span>
-                            <button class="bg-blue-primary text-white px-4 py-2 rounded-lg hover:bg-blue-dark transition-colors">
-                                Voir détails
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Technical Stack -->
-    <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Stack Technique
-                </h2>
-                <p class="text-xl text-gray-600">
-                    Technologies modernes et performantes
-                </p>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-black rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white font-bold text-2xl">N</span>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-home text-white text-2xl"></i>
                     </div>
-                    <h3 class="font-semibold text-gray-900">Next.js 14</h3>
-                    <p class="text-sm text-gray-600">App Router</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Pages Complètes</h3>
+                    <p class="text-gray-600">
+                        Toutes les pages migrées : Accueil, Propriétés, À propos, Contact, Connexion, Inscription, Tableau de bord
+                    </p>
                 </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white font-bold text-2xl">TS</span>
+
+                <!-- Feature 2 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-search text-white text-2xl"></i>
                     </div>
-                    <h3 class="font-semibold text-gray-900">TypeScript</h3>
-                    <p class="text-sm text-gray-600">Type Safety</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">SEO Optimisé</h3>
+                    <p class="text-gray-600">
+                        Métadonnées dynamiques, sitemap XML, robots.txt, données structurées Schema.org
+                    </p>
                 </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-cyan-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white font-bold text-2xl">TW</span>
+
+                <!-- Feature 3 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
                     </div>
-                    <h3 class="font-semibold text-gray-900">Tailwind CSS</h3>
-                    <p class="text-sm text-gray-600">Styling</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Responsive Design</h3>
+                    <p class="text-gray-600">
+                        Interface adaptative avec Tailwind CSS, optimisée pour tous les appareils
+                    </p>
                 </div>
-                
-                <div class="text-center">
-                    <div class="w-20 h-20 bg-orange-500 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white font-bold text-2xl">API</span>
+
+                <!-- Feature 4 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-code text-white text-2xl"></i>
                     </div>
-                    <h3 class="font-semibold text-gray-900">API Ready</h3>
-                    <p class="text-sm text-gray-600">Backend Integration</p>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">TypeScript</h3>
+                    <p class="text-gray-600">
+                        Code robuste avec TypeScript, types stricts et interfaces complètes
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-database text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">API Ready</h3>
+                    <p class="text-gray-600">
+                        Services API complets pour l'intégration avec votre backend existant
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="card-hover bg-gray-50 rounded-lg p-8 text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-rocket text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Performance</h3>
+                    <p class="text-gray-600">
+                        Optimisations Next.js : SSR, images optimisées, lazy loading, compression
+                    </p>
                 </div>
             </div>
         </div>
@@ -306,77 +160,142 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Pages Implémentées
+                    Pages Migrées
                 </h2>
                 <p class="text-xl text-gray-600">
-                    Application complète et fonctionnelle
+                    Chaque page a été fidèlement reproduite avec des améliorations SEO
                 </p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">🏠 Page d'Accueil</h3>
-                    <p class="text-sm text-gray-600">Hero section, propriétés en vedette, statistiques</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-clock text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Page d'Introduction</h3>
+                    <p class="text-sm text-gray-600">Minuterie et redirection automatique</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">🏘️ Liste des Propriétés</h3>
-                    <p class="text-sm text-gray-600">Filtres avancés, pagination, tri, recherche</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-home text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Page d'Accueil</h3>
+                    <p class="text-sm text-gray-600">Hero section, propriétés en vedette</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">ℹ️ À Propos</h3>
-                    <p class="text-sm text-gray-600">Présentation de l'entreprise et services</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-building text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Liste Propriétés</h3>
+                    <p class="text-sm text-gray-600">Filtres, recherche, pagination</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">📞 Contact</h3>
-                    <p class="text-sm text-gray-600">Formulaire de contact, informations, FAQ</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-info-circle text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">À Propos</h3>
+                    <p class="text-sm text-gray-600">Histoire, équipe, valeurs</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">🔐 Connexion</h3>
-                    <p class="text-sm text-gray-600">Authentification avec validation</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-envelope text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Contact</h3>
+                    <p class="text-sm text-gray-600">Formulaire, FAQ, bureaux</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">📝 Inscription</h3>
-                    <p class="text-sm text-gray-600">Création de compte avec validation</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-sign-in-alt text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Connexion</h3>
+                    <p class="text-sm text-gray-600">Authentification sécurisée</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">📊 Tableau de Bord</h3>
-                    <p class="text-sm text-gray-600">Statistiques, gestion des propriétés, messages</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-user-plus text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Inscription</h3>
+                    <p class="text-sm text-gray-600">Processus en 2 étapes</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">🔧 Services API</h3>
-                    <p class="text-sm text-gray-600">Intégration backend complète prête</p>
+
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
+                    <i class="fas fa-tachometer-alt text-blue-600 text-3xl mb-4"></i>
+                    <h3 class="font-semibold text-gray-900 mb-2">Tableau de Bord</h3>
+                    <p class="text-sm text-gray-600">Gestion complète du compte</p>
                 </div>
-                
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                    <h3 class="font-semibold text-gray-900 mb-2">🎨 Composants UI</h3>
-                    <p class="text-sm text-gray-600">Bibliothèque de composants réutilisables</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Détails Techniques
+                </h2>
+                <p class="text-xl text-gray-600">
+                    Technologies et optimisations implémentées
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Technologies Utilisées</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fab fa-react text-blue-600 text-xl mr-3"></i>
+                            <span class="font-medium">Next.js 14 avec App Router</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fab fa-js-square text-yellow-600 text-xl mr-3"></i>
+                            <span class="font-medium">TypeScript pour la robustesse</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-paint-brush text-purple-600 text-xl mr-3"></i>
+                            <span class="font-medium">Tailwind CSS pour le design</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-icons text-green-600 text-xl mr-3"></i>
+                            <span class="font-medium">Lucide React pour les icônes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Optimisations SEO</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-search text-blue-600 text-xl mr-3"></i>
+                            <span class="font-medium">Métadonnées dynamiques par page</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-sitemap text-green-600 text-xl mr-3"></i>
+                            <span class="font-medium">Sitemap XML automatique</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-robot text-purple-600 text-xl mr-3"></i>
+                            <span class="font-medium">Robots.txt optimisé</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-code text-orange-600 text-xl mr-3"></i>
+                            <span class="font-medium">Données structurées Schema.org</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- CTA Section -->
-    <section class="py-20 gradient-bg text-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <section class="gradient-bg text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">
-                Application Next.js Complète
+                Migration Terminée avec Succès !
             </h2>
-            <p class="text-xl mb-8 opacity-90">
-                Prête pour l'intégration backend et le déploiement en production
+            <p class="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+                Votre application Next.js est maintenant prête pour la production avec toutes les optimisations SEO et de performance.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="bg-white text-blue-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                    Voir le Code Source
+                <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                    <i class="fab fa-github mr-2"></i>
+                    Voir le code source
                 </button>
-                <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-primary transition-colors">
-                    Documentation API
+                <button class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Déployer en production
                 </button>
             </div>
         </div>
@@ -385,94 +304,46 @@
     <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-r from-blue-primary to-blue-dark rounded-lg flex items-center justify-center">
-                            <span class="text-white font-bold">O</span>
-                        </div>
-                        <span class="text-xl font-bold">Ophrus</span>
+            <div class="text-center">
+                <div class="flex items-center justify-center mb-6">
+                    <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-2xl">O</span>
                     </div>
-                    <p class="text-gray-400">
-                        Plateforme immobilière moderne du Congo, développée avec Next.js et optimisée pour le SEO.
-                    </p>
+                    <span class="ml-3 text-2xl font-bold">Ophrus</span>
                 </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Navigation</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#home" class="hover:text-white transition-colors">Accueil</a></li>
-                        <li><a href="#properties" class="hover:text-white transition-colors">Propriétés</a></li>
-                        <li><a href="#about" class="hover:text-white transition-colors">À propos</a></li>
-                        <li><a href="#contact" class="hover:text-white transition-colors">Contact</a></li>
-                    </ul>
+                <p class="text-gray-400 mb-6">
+                    Migration React vers Next.js réalisée avec succès
+                </p>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
                 </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Technologies</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>Next.js 14</li>
-                        <li>TypeScript</li>
-                        <li>Tailwind CSS</li>
-                        <li>API Integration</li>
-                    </ul>
+                <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+                    <p>&copy; 2024 Ophrus Immobilier. Tous droits réservés.</p>
                 </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
-                    <ul class="space-y-2 text-gray-400">
-                        <li>+242 06 123 45 67</li>
-                        <li>contact@ophrus-immobilier.cg</li>
-                        <li>Brazzaville, Congo</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2024 Ophrus. Tous droits réservés. Application Next.js complète et optimisée SEO.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
+        // Simple animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card-hover');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 100);
             });
-        });
-        
-        // Add scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        // Observe elements for animation
-        document.querySelectorAll('.property-card, .animate-slide-up').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(el);
         });
     </script>
 </body>

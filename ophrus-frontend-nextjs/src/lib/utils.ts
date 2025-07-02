@@ -5,243 +5,271 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Validation functions
-export const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-export const validatePhone = (phone: string): boolean => {
-  // Congo phone number format: +242 XX XXX XX XX
-  const phoneRegex = /^(\+242|242)?\s?[0-9]{2}\s?[0-9]{3}\s?[0-9]{2}\s?[0-9]{2}$/;
-  return phoneRegex.test(phone.replace(/\s/g, ''));
-};
-
-// Formatting functions
-export const formatPrice = (price: number, currency: string = 'XAF'): string => {
+export const formatPrice = (price: number): string => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
-    currency: currency,
+    currency: 'XAF',
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   }).format(price);
 };
 
 export const formatDate = (date: string | Date): string => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat('fr-FR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-  }).format(dateObj);
+  }).format(new Date(date));
 };
 
-export const formatDateTime = (date: string | Date): string => {
-  const dateObj = typeof date === 'string' ? new Date(date) : date;
+export const formatTime = (date: string | Date): string => {
   return new Intl.DateTimeFormat('fr-FR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-  }).format(dateObj);
+  }).format(new Date(date));
 };
 
-export const formatSurface = (surface: number): string => {
-  return `${surface} m²`;
-};
-
-export const formatBedrooms = (bedrooms: number): string => {
-  return bedrooms === 1 ? '1 chambre' : `${bedrooms} chambres`;
-};
-
-export const formatBathrooms = (bathrooms: number): string => {
-  return bathrooms === 1 ? '1 salle de bain' : `${bathrooms} salles de bain`;
-};
-
-// Utility functions
-export const truncateText = (text: string, maxLength: number): string => {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength).trim() + '...';
+export const formatDateShort = (date: string | Date): string => {
+  return new Intl.DateTimeFormat('fr-FR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date(date));
 };
 
 export const slugify = (text: string): string => {
   return text
+    .toString()
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Remove accents
-    .replace(/[^a-z0-9 -]/g, '') // Remove special characters
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-    .trim('-'); // Remove leading/trailing hyphens
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-')
+    .replace(/^-+/, '')
+    .replace(/-+$/, '');
+};
+
+export const truncateText = (text: string, maxLength: number = 100): string => {
+  if (text.length <= maxLength) return text;
+  return text.substr(0, maxLength) + '...';
+};
+
+export const validateEmail = (email: string): boolean => {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+};
+
+export const validatePhone = (phone: string): boolean => {
+  const re = /^[\+]?[1-9][\d]{0,15}$/;
+  return re.test(phone.replace(/\s/g, ''));
 };
 
 export const generateId = (): string => {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  return Math.random().toString(36).substr(2, 9);
 };
 
-// Array utilities
-export const sortByDate = <T extends { createdAt?: string | Date }>(
-  items: T[],
-  order: 'asc' | 'desc' = 'desc'
-): T[] => {
-  return [...items].sort((a, b) => {
-    const dateA = new Date(a.createdAt || 0).getTime();
-    const dateB = new Date(b.createdAt || 0).getTime();
-    return order === 'desc' ? dateB - dateA : dateA - dateB;
-  });
-};
-
-export const sortByPrice = <T extends { price?: number }>(
-  items: T[],
-  order: 'asc' | 'desc' = 'asc'
-): T[] => {
-  return [...items].sort((a, b) => {
-    const priceA = a.price || 0;
-    const priceB = b.price || 0;
-    return order === 'asc' ? priceA - priceB : priceB - priceA;
-  });
-};
-
-export const filterByCategory = <T extends { category?: string }>(
-  items: T[],
-  category: string
-): T[] => {
-  if (!category) return items;
-  return items.filter(item => item.category === category);
-};
-
-export const filterByPriceRange = <T extends { price?: number }>(
-  items: T[],
-  minPrice?: number,
-  maxPrice?: number
-): T[] => {
-  return items.filter(item => {
-    const price = item.price || 0;
-    if (minPrice && price < minPrice) return false;
-    if (maxPrice && price > maxPrice) return false;
-    return true;
-  });
-};
-
-export const searchItems = <T extends Record<string, any>>(
-  items: T[],
-  searchTerm: string,
-  searchFields: (keyof T)[]
-): T[] => {
-  if (!searchTerm) return items;
-  
-  const term = searchTerm.toLowerCase();
-  return items.filter(item =>
-    searchFields.some(field => {
-      const value = item[field];
-      if (typeof value === 'string') {
-        return value.toLowerCase().includes(term);
-      }
-      return false;
-    })
-  );
-};
-
-// Local storage utilities
-export const getFromStorage = <T>(key: string, defaultValue: T): T => {
-  if (typeof window === 'undefined') return defaultValue;
-  
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : defaultValue;
-  } catch (error) {
-    console.error(`Error reading from localStorage key "${key}":`, error);
-    return defaultValue;
-  }
-};
-
-export const setToStorage = <T>(key: string, value: T): void => {
-  if (typeof window === 'undefined') return;
-  
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error(`Error writing to localStorage key "${key}":`, error);
-  }
-};
-
-export const removeFromStorage = (key: string): void => {
-  if (typeof window === 'undefined') return;
-  
-  try {
-    localStorage.removeItem(key);
-  } catch (error) {
-    console.error(`Error removing from localStorage key "${key}":`, error);
-  }
-};
-
-// Debounce utility
 export const debounce = <T extends (...args: any[]) => any>(
   func: T,
   wait: number
 ): ((...args: Parameters<T>) => void) => {
   let timeout: NodeJS.Timeout;
-  
-  return (...args: Parameters<T>) => {
+  return function executedFunction(...args: Parameters<T>) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
     clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
+    timeout = setTimeout(later, wait);
   };
 };
 
-// Image utilities
-export const getImageUrl = (imagePath: string, size?: 'thumb' | 'medium' | 'large'): string => {
-  if (!imagePath) return '/images/placeholder.jpg';
-  
-  // If it's already a full URL, return as is
-  if (imagePath.startsWith('http')) return imagePath;
-  
-  // Add size suffix if specified
-  if (size && !imagePath.includes('unsplash')) {
-    const extension = imagePath.split('.').pop();
-    const basePath = imagePath.replace(`.${extension}`, '');
-    return `/images/${basePath}_${size}.${extension}`;
-  }
-  
-  return imagePath.startsWith('/') ? imagePath : `/images/${imagePath}`;
-};
-
-// Error handling
-export const handleApiError = (error: any): string => {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
-  }
-  
-  if (error.message) {
-    return error.message;
-  }
-  
-  return 'Une erreur inattendue s\'est produite';
-};
-
-// URL utilities
-export const buildUrl = (base: string, params: Record<string, any>): string => {
-  const url = new URL(base, window.location.origin);
-  
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== null && value !== undefined && value !== '') {
-      url.searchParams.set(key, String(value));
+export const throttle = <T extends (...args: any[]) => any>(
+  func: T,
+  limit: number
+): ((...args: Parameters<T>) => void) => {
+  let inThrottle: boolean;
+  return function(this: any, ...args: Parameters<T>) {
+    const context = this;
+    if (!inThrottle) {
+      func.apply(context, args);
+      inThrottle = true;
+      setTimeout(() => inThrottle = false, limit);
     }
-  });
-  
-  return url.toString();
+  };
 };
 
-export const getQueryParams = (): Record<string, string> => {
-  if (typeof window === 'undefined') return {};
+export const getImageUrl = (imagePath?: string): string => {
+  if (!imagePath) return '/placeholder-property.jpg';
+  if (imagePath.startsWith('http')) return imagePath;
+  return `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${imagePath}`;
+};
+
+export const getPropertyTypeIcon = (category: string): string => {
+  const icons: Record<string, string> = {
+    'Appartement': '🏢',
+    'Maison': '🏠',
+    'Terrain': '🌍',
+    'Commercial': '🏪',
+    'Autre': '🏘️'
+  };
+  return icons[category] || icons['Autre'];
+};
+
+interface Property {
+  nombre_chambres?: number;
+  nombre_salles_bain?: number;
+  superficie?: number;
+  garage?: boolean;
+  piscine?: boolean;
+  jardin?: boolean;
+  balcon?: boolean;
+  gardien?: boolean;
+}
+
+export const getPropertyFeatures = (property: Property): string[] => {
+  const features: string[] = [];
   
-  const params: Record<string, string> = {};
-  const searchParams = new URLSearchParams(window.location.search);
+  if (property.nombre_chambres) {
+    features.push(`${property.nombre_chambres} chambre${property.nombre_chambres > 1 ? 's' : ''}`);
+  }
   
-  searchParams.forEach((value, key) => {
-    params[key] = value;
+  if (property.nombre_salles_bain) {
+    features.push(`${property.nombre_salles_bain} salle${property.nombre_salles_bain > 1 ? 's' : ''} de bain`);
+  }
+  
+  if (property.superficie) {
+    features.push(`${property.superficie} m²`);
+  }
+  
+  if (property.garage) features.push('Garage');
+  if (property.piscine) features.push('Piscine');
+  if (property.jardin) features.push('Jardin');
+  if (property.balcon) features.push('Balcon');
+  if (property.gardien) features.push('Gardien');
+  
+  return features;
+};
+
+export const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+  const R = 6371; // Radius of the Earth in kilometers
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = 
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+    Math.sin(dLon/2) * Math.sin(dLon/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const d = R * c; // Distance in kilometers
+  return d;
+};
+
+export const getStarRating = (rating: number): string => {
+  const stars: string[] = [];
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+  
+  for (let i = 0; i < fullStars; i++) {
+    stars.push('★');
+  }
+  
+  if (hasHalfStar) {
+    stars.push('☆');
+  }
+  
+  while (stars.length < 5) {
+    stars.push('☆');
+  }
+  
+  return stars.join('');
+};
+
+interface PropertyForSort {
+  prix: number;
+  createdAt: string;
+  noteMoyenne?: number;
+  superficie?: number;
+}
+
+export const sortProperties = <T extends PropertyForSort>(properties: T[], sortBy: string): T[] => {
+  const sorted = [...properties];
+  
+  switch (sortBy) {
+    case 'price-asc':
+      return sorted.sort((a, b) => a.prix - b.prix);
+    case 'price-desc':
+      return sorted.sort((a, b) => b.prix - a.prix);
+    case 'date-desc':
+      return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    case 'date-asc':
+      return sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    case 'rating-desc':
+      return sorted.sort((a, b) => (b.noteMoyenne || 0) - (a.noteMoyenne || 0));
+    case 'surface-desc':
+      return sorted.sort((a, b) => (b.superficie || 0) - (a.superficie || 0));
+    default:
+      return sorted;
+  }
+};
+
+interface PropertyForFilter {
+  titre: string;
+  description: string;
+  ville: string;
+  adresse?: string;
+  categorie: string;
+  prix: number;
+  nombre_chambres?: number;
+  nombre_salles_bain?: number;
+}
+
+interface Filters {
+  search?: string;
+  category?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  city?: string;
+  bedrooms?: string;
+  bathrooms?: string;
+}
+
+export const filterProperties = <T extends PropertyForFilter>(properties: T[], filters: Filters): T[] => {
+  return properties.filter(property => {
+    // Search filter
+    if (filters.search) {
+      const searchTerm = filters.search.toLowerCase();
+      const searchableText = `${property.titre} ${property.description} ${property.ville} ${property.adresse || ''}`.toLowerCase();
+      if (!searchableText.includes(searchTerm)) return false;
+    }
+    
+    // Category filter
+    if (filters.category && property.categorie !== filters.category) {
+      return false;
+    }
+    
+    // Price filters
+    if (filters.minPrice && property.prix < parseInt(filters.minPrice)) {
+      return false;
+    }
+    if (filters.maxPrice && property.prix > parseInt(filters.maxPrice)) {
+      return false;
+    }
+    
+    // City filter
+    if (filters.city && !property.ville.toLowerCase().includes(filters.city.toLowerCase())) {
+      return false;
+    }
+    
+    // Bedrooms filter
+    if (filters.bedrooms && (property.nombre_chambres || 0) < parseInt(filters.bedrooms)) {
+      return false;
+    }
+    
+    // Bathrooms filter
+    if (filters.bathrooms && (property.nombre_salles_bain || 0) < parseInt(filters.bathrooms)) {
+      return false;
+    }
+    
+    return true;
   });
-  
-  return params;
 };
 

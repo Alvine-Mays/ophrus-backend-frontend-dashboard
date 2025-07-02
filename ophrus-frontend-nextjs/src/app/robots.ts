@@ -1,13 +1,13 @@
-import { MetadataRoute } from 'next';
+import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/private/', '/admin/', '/api/'],
+      disallow: ['/dashboard/', '/admin/', '/api/'],
     },
-    sitemap: 'https://ophrus-immobilier.com/sitemap.xml',
-  };
+    sitemap: 'https://ophrus-immobilier.cg/sitemap.xml',
+  }
 }
 

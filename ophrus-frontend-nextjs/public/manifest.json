@@ -1,11 +1,11 @@
 {
-  "name": "Ophrus - Plateforme Immobilière Congo-Brazzaville",
+  "name": "Ophrus - Plateforme Immobilière",
   "short_name": "Ophrus",
-  "description": "Découvrez la plateforme immobilière moderne du Congo-Brazzaville. Trouvez votre propriété idéale avec Ophrus.",
+  "description": "La plateforme immobilière de référence au Congo-Brazzaville",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#009fe3",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
   "icons": [
     {
