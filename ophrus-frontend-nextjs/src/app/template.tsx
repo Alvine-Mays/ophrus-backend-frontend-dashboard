@@ -8,7 +8,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
   // Pages qui n'ont pas besoin du layout complet (comme la page d'intro)
-  const noLayoutPages = ['/intro'];
+  const noLayoutPages = ['/'];
   
   if (noLayoutPages.includes(pathname)) {
     return <>{children}</>;

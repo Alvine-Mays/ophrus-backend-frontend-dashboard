@@ -10,12 +10,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ophrus - Plateforme Immobilière Moderne',
-    template: '%s | Ophrus'
+    default: 'Ophrus Immobilier - Votre partenaire de confiance au Congo-Brazzaville',
+    template: '%s | Ophrus Immobilier'
   },
-  description: 'Découvrez la plateforme immobilière nouvelle génération. Trouvez votre propriété idéale avec Ophrus - recherche avancée, visites virtuelles et gestion complète.',
+  description: 'Découvrez la plateforme immobilière moderne du Congo-Brazzaville. Trouvez votre propriété idéale avec Ophrus - recherche avancée, transactions sécurisées et accompagnement personnalisé.',
   keywords: [
     'immobilier',
+    'Congo-Brazzaville',
+    'Brazzaville',
+    'Pointe-Noire',
     'propriété',
     'achat',
     'vente',
@@ -26,15 +29,15 @@ export const metadata: Metadata = {
     'investissement immobilier',
     'ophrus'
   ],
-  authors: [{ name: 'Ophrus Team' }],
-  creator: 'Ophrus',
-  publisher: 'Ophrus',
+  authors: [{ name: 'Ophrus Immobilier' }],
+  creator: 'Ophrus Immobilier',
+  publisher: 'Ophrus Immobilier',
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://ophrus.com'),
+  metadataBase: new URL('https://ophrus-immobilier.com'),
   alternates: {
     canonical: '/',
     languages: {
@@ -45,25 +48,25 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://ophrus.com',
-    title: 'Ophrus - Plateforme Immobilière Moderne',
-    description: 'Découvrez la plateforme immobilière nouvelle génération. Trouvez votre propriété idéale avec Ophrus.',
-    siteName: 'Ophrus',
+    url: 'https://ophrus-immobilier.com',
+    title: 'Ophrus Immobilier - Votre partenaire de confiance au Congo-Brazzaville',
+    description: 'Découvrez la plateforme immobilière moderne du Congo-Brazzaville. Trouvez votre propriété idéale avec Ophrus.',
+    siteName: 'Ophrus Immobilier',
     images: [
       {
         url: '/images/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'Ophrus - Plateforme Immobilière',
+        alt: 'Ophrus Immobilier - Plateforme Immobilière Congo-Brazzaville',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ophrus - Plateforme Immobilière Moderne',
-    description: 'Découvrez la plateforme immobilière nouvelle génération.',
+    title: 'Ophrus Immobilier - Votre partenaire de confiance au Congo-Brazzaville',
+    description: 'Découvrez la plateforme immobilière moderne du Congo-Brazzaville.',
     images: ['/images/twitter-image.jpg'],
-    creator: '@ophrus',
+    creator: '@ophrus_immobilier',
   },
   robots: {
     index: true,
@@ -95,7 +98,7 @@ export default function RootLayout({
         <link rel="icon" href="/icon.svg" type="image/svg+xml" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#009fe3" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         
         {/* Preconnect to external domains */}
@@ -109,18 +112,19 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'Ophrus',
-              url: 'https://ophrus.com',
-              logo: 'https://ophrus.com/images/logo.png',
-              description: 'Plateforme immobilière moderne pour l\'achat, la vente et la location de propriétés.',
+              name: 'Ophrus Immobilier',
+              url: 'https://ophrus-immobilier.com',
+              logo: 'https://ophrus-immobilier.com/images/logo.png',
+              description: 'Plateforme immobilière moderne pour l\'achat, la vente et la location de propriétés au Congo-Brazzaville.',
               address: {
                 '@type': 'PostalAddress',
-                addressCountry: 'FR',
+                addressCountry: 'CG',
+                addressLocality: 'Brazzaville',
               },
               sameAs: [
-                'https://facebook.com/ophrus',
-                'https://twitter.com/ophrus',
-                'https://linkedin.com/company/ophrus',
+                'https://facebook.com/ophrus.immobilier',
+                'https://twitter.com/ophrus_immobilier',
+                'https://linkedin.com/company/ophrus-immobilier',
               ],
             }),
           }}
