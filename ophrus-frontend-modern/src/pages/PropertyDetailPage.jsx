@@ -12,6 +12,8 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Modal from '../components/ui/Modal';
 import { formatPrice, formatDate, getImageUrl, getPropertyTypeIcon } from '../lib/utils';
 import { cn } from '../lib/utils';
+import SEOHead from '../components/seo/SEOHead';
+import { seoConfig, generatePropertyStructuredData } from '../utils/seoData';
 
 const PropertyDetailPage = () => {
   const { id } = useParams();
@@ -105,8 +107,19 @@ const PropertyDetailPage = () => {
   if (property.piscine) features.push({ icon: Waves, label: 'Piscine' });
   if (property.jardin) features.push({ icon: TreePine, label: 'Jardin' });
 
+  const seoData = seoConfig.propertyDetail(property);
+  const structuredData = generatePropertyStructuredData(property);
+
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+        title={seoData.title}
+        description={seoData.description}
+        keywords={seoData.keywords}
+        image={seoData.image}
+        type={seoData.type}
+        structuredData={structuredData}
+      />
       {/* Header */}
       <div className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

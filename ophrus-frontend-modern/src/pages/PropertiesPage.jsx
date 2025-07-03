@@ -8,6 +8,9 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Button from '../components/ui/Button';
 import Select from '../components/ui/Select';
 import { cn } from '../lib/utils';
+import SEOHead from '../components/seo/SEOHead';
+import { PropertiesListStructuredData } from '../components/seo/StructuredData';
+import { seoConfig } from '../utils/seoData';
 
 const PropertiesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -119,6 +122,13 @@ const PropertiesPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
+      <SEOHead 
+        title={seoConfig.properties.title}
+        description={seoConfig.properties.description}
+        keywords={seoConfig.properties.keywords}
+        image={seoConfig.properties.image}
+      />
+      <PropertiesListStructuredData properties={properties} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">

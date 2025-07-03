@@ -6,6 +6,9 @@ import PropertyCard from '../components/properties/PropertyCard';
 import Button from '../components/ui/Button';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { formatPrice } from '../lib/utils';
+import SEOHead from '../components/seo/SEOHead';
+import { HomeStructuredData } from '../components/seo/StructuredData';
+import { seoConfig, organizationStructuredData } from '../utils/seoData';
 
 const HomePage = () => {
   const { properties, loading, fetchProperties } = useProperty();
@@ -57,6 +60,14 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead 
+        title={seoConfig.home.title}
+        description={seoConfig.home.description}
+        keywords={seoConfig.home.keywords}
+        image={seoConfig.home.image}
+        structuredData={organizationStructuredData}
+      />
+      <HomeStructuredData />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white overflow-hidden">
         <div 
